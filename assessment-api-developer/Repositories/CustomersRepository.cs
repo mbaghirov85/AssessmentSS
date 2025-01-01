@@ -37,10 +37,20 @@ namespace AssessmentPlatformDeveloper.Repositories {
         public void Update(Customer customer) {
             var existingCustomer = customers.FirstOrDefault(c => c.ID == customer.ID);
             if (existingCustomer != null) {
-                // Update properties of existingCustomer based on the properties of customer
-                // For example:
                 existingCustomer.Name = customer.Name;
-                // Repeat for other properties
+                existingCustomer.Address = customer.Address;
+                existingCustomer.Email = customer.Email;
+                existingCustomer.Phone = customer.Phone;
+                existingCustomer.City = customer.City;
+                existingCustomer.State = customer.State;
+                existingCustomer.Zip = customer.Zip;
+                existingCustomer.Country = customer.Country;
+                existingCustomer.Notes = customer.Notes;
+                existingCustomer.ContactName = customer.ContactName;
+                existingCustomer.ContactPhone = customer.ContactPhone;
+                existingCustomer.ContactEmail = customer.ContactEmail;
+                existingCustomer.ContactTitle = customer.ContactTitle;
+                existingCustomer.ContactNotes = customer.ContactNotes;
             }
         }
 
