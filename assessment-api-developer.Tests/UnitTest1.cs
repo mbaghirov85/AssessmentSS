@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace assessment_platform_developer.Tests
+namespace AssessmentPlatformDeveloper.Tests
 {
 	[TestClass]
 	public class UnitTest1

@@ -5,15 +5,15 @@ using System.Reflection;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
-using assessment_platform_developer.Repositories;
+using AssessmentPlatformDeveloper.Repositories;
 using SimpleInjector.Diagnostics;
 using System.Web.Compilation;
 using System.Web.UI;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using assessment_platform_developer.Services;
+using AssessmentPlatformDeveloper.Services;
 using SimpleInjector.Integration.Web;
 
-namespace assessment_platform_developer
+namespace AssessmentPlatformDeveloper
 {
 	public sealed class PageInitializerModule : IHttpModule
 	{

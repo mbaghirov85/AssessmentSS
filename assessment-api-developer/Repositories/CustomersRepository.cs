@@ -1,9 +1,9 @@
-﻿using assessment_platform_developer.Models;
+﻿using AssessmentPlatformDeveloper.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace assessment_platform_developer.Repositories
+namespace AssessmentPlatformDeveloper.Repositories
 {
     public interface ICustomerRepository
     {

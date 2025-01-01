@@ -1,11 +1,11 @@
-﻿using assessment_platform_developer.Models;
-using assessment_platform_developer.Repositories;
+﻿using AssessmentPlatformDeveloper.Models;
+using AssessmentPlatformDeveloper.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace assessment_platform_developer.Services
+namespace AssessmentPlatformDeveloper.Services
 {
     public interface ICustomerService
     {

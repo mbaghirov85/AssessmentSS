@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace assessment_platform_developer.Models
+namespace AssessmentPlatformDeveloper.Models
 {
     public enum CanadianProvinces
     {
