@@ -7,48 +7,51 @@ using System.Web;
 
 namespace assessment_platform_developer.Services
 {
-	public interface ICustomerService
-	{
-		IEnumerable<Customer> GetAllCustomers();
-		Customer GetCustomer(int id);
-		void AddCustomer(Customer customer);
-		void UpdateCustomer(Customer customer);
-		void DeleteCustomer(int id);
-	}
+    public interface ICustomerService
+    {
+        IEnumerable<Customer> GetAllCustomers();
 
-	public class CustomerService : ICustomerService
-	{
-		private readonly ICustomerRepository customerRepository;
+        Customer GetCustomer(int id);
 
-		public CustomerService(ICustomerRepository customerRepository)
-		{
-			this.customerRepository = customerRepository;
-		}
+        void AddCustomer(Customer customer);
 
-		public IEnumerable<Customer> GetAllCustomers()
-		{
-			return customerRepository.GetAll();
-		}
+        void UpdateCustomer(Customer customer);
 
-		public Customer GetCustomer(int id)
-		{
-			return customerRepository.Get(id);
-		}
+        void DeleteCustomer(int id);
+    }
 
-		public void AddCustomer(Customer customer)
-		{
-			customerRepository.Add(customer);
-		}
+    public class CustomerService : ICustomerService
+    {
+        private readonly ICustomerRepository customerRepository;
 
-		public void UpdateCustomer(Customer customer)
-		{
-			customerRepository.Update(customer);
-		}
+        public CustomerService(ICustomerRepository customerRepository)
+        {
+            this.customerRepository = customerRepository;
+        }
 
-		public void DeleteCustomer(int id)
-		{
-			customerRepository.Delete(id);
-		}
-	}
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            return customerRepository.GetAll();
+        }
 
+        public Customer GetCustomer(int id)
+        {
+            return customerRepository.Get(id);
+        }
+
+        public void AddCustomer(Customer customer)
+        {
+            customerRepository.Add(customer);
+        }
+
+        public void UpdateCustomer(Customer customer)
+        {
+            customerRepository.Update(customer);
+        }
+
+        public void DeleteCustomer(int id)
+        {
+            customerRepository.Delete(id);
+        }
+    }
 }

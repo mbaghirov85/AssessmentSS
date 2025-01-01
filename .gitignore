@@ -1,2 +1,4 @@
-
-.codegpt
+/.codegpt
+/.vs
+/assessment-api-developer/.vs
+/assessment-api-developer.Tests/.vs
