@@ -53,6 +53,54 @@ namespace AssessmentPlatformDeveloper.Services {
                 throw new ArgumentException($"Cannot update. Customer with ID {customer.ID} does not exist.");
             }
 
+            /* // Here we can add double check if parameters are sent from the web form and only in that case update the values in the storage
+            if (!string.IsNullOrEmpty(customer.Name))
+                existingCustomer.Name = customer.Name;
+
+            if (!string.IsNullOrEmpty(customer.Address))
+                existingCustomer.Address = customer.Address;
+
+            if (!string.IsNullOrEmpty(customer.Email))
+                existingCustomer.Email = customer.Email;
+
+            if (!string.IsNullOrEmpty(customer.Phone))
+                existingCustomer.Phone = customer.Phone;
+
+            if (!string.IsNullOrEmpty(customer.City))
+                existingCustomer.City = customer.City;
+
+            if (!string.IsNullOrEmpty(customer.State))
+                existingCustomer.State = customer.State;
+
+            if (!string.IsNullOrEmpty(customer.Zip))
+                existingCustomer.Zip = customer.Zip;
+
+            if (!string.IsNullOrEmpty(customer.Country))
+                existingCustomer.Country = customer.Country;
+
+            if (!string.IsNullOrEmpty(customer.Notes))
+                existingCustomer.Notes = customer.Notes;
+
+            if (!string.IsNullOrEmpty(customer.ContactName))
+                existingCustomer.ContactName = customer.ContactName;
+
+            if (!string.IsNullOrEmpty(customer.ContactPhone))
+                existingCustomer.ContactPhone = customer.ContactPhone;
+
+            if (!string.IsNullOrEmpty(customer.ContactEmail))
+                existingCustomer.ContactEmail = customer.ContactEmail;
+
+            if (!string.IsNullOrEmpty(customer.ContactTitle))
+                existingCustomer.ContactTitle = customer.ContactTitle;
+
+            if (!string.IsNullOrEmpty(customer.ContactNotes))
+                existingCustomer.ContactNotes = customer.ContactNotes;
+
+            customerRepository.Update(existingCustomer);
+
+            // if uncommiting this block then remove the next line which updates the customer repository
+            */
+
             customerRepository.Update(customer);
         }
 
