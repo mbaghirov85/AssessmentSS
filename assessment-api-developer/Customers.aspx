@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CustomerForm.aspx.cs" Inherits="AssessmentPlatformDeveloper.Customers" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Customers.aspx.cs" Inherits="AssessmentPlatformDeveloper.Customers" %>
 
 <!DOCTYPE html>
 
