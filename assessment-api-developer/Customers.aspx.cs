@@ -1,14 +1,14 @@
-﻿using assessment_platform_developer.Models;
+﻿using AssessmentPlatformDeveloper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using assessment_platform_developer.Services;
+using AssessmentPlatformDeveloper.Services;
 using Container = SimpleInjector.Container;
 
-namespace assessment_platform_developer
+namespace AssessmentPlatformDeveloper
 {
 	public partial class Customers : Page
 	{

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
 
-namespace assessment_platform_developer
+namespace AssessmentPlatformDeveloper
 {
     public class BundleConfig
     {
