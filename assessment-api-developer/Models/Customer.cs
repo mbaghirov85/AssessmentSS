@@ -13,6 +13,7 @@ namespace assessment_platform_developer.Models
 		[Description("United States")]
 		UnitedStates
 	}
+	
 	public enum USStates
 	{
 		Alabama,
@@ -43,36 +44,26 @@ namespace assessment_platform_developer.Models
 		Montana,
 		Nebraska,
 		Nevada,
-		[Description("New Hampshire")]
-		NewHampshire,
-		[Description("New Jersey")]
-		NewJersey,
-		[Description("New Mexico")]
-		NewMexico,
-		[Description("New York")]
-		NewYork,
-		[Description("North Carolina")]
-		NorthCarolina,
-		[Description("North Dakota")]
-		NorthDakota,
+		[Description("New Hampshire")] NewHampshire,
+		[Description("New Jersey")] NewJersey,
+		[Description("New Mexico")] NewMexico,
+		[Description("New York")] NewYork,
+		[Description("North Carolina")] NorthCarolina,
+		[Description("North Dakota")] NorthDakota,
 		Ohio,
 		Oklahoma,
 		Oregon,
 		Pennsylvania,
-		[Description("Rhode Island")]
-		RhodeIsland,
-		[Description("South Carolina")]
-		SouthCarolina,
-		[Description("South Dakota")]
-		SouthDakota,
+		[Description("Rhode Island")] RhodeIsland,
+		[Description("South Carolina")] SouthCarolina,
+		[Description("South Dakota")] SouthDakota,
 		Tennessee,
 		Texas,
 		Utah,
 		Vermont,
 		Virginia,
 		Washington,
-		[Description("West Virginia")]
-		WestVirginia,
+		[Description("West Virginia")] WestVirginia,
 		Wisconsin,
 		Wyoming
 	}
@@ -80,21 +71,16 @@ namespace assessment_platform_developer.Models
 	public enum CanadianProvinces
 	{
 		Alberta,
-		[Description("British Columbia")]
-		BritishColumbia,
+		[Description("British Columbia")] BritishColumbia,
 		Manitoba,
 		NewBrunswick,
-		[Description("Newfoundland and Labrador")]
-		NewfoundlandAndLabrador,
-		[Description("Northwest Territories")]
-		NovaScotia,
+		[Description("Newfoundland and Labrador")] NewfoundlandAndLabrador,
+		[Description("Nova Scotia")] NovaScotia,
 		Ontario,
-		[Description("Prince Edward Island")]
-		PrinceEdwardIsland,
+		[Description("Prince Edward Island")] PrinceEdwardIsland,
 		Quebec,
 		Saskatchewan,
-		[Description("Yukon")]
-		NorthwestTerritories,
+		[Description("Northwest Territories")] NorthwestTerritories,
 		Nunavut,
 		Yukon
 	}
