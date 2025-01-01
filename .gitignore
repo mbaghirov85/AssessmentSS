@@ -1,4 +1,5 @@
 /.codegpt
 /.vs
+CodeMaid.config
 /assessment-api-developer/.vs
 /assessment-api-developer.Tests/.vs

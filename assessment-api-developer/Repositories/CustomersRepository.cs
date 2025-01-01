@@ -1,12 +1,11 @@
 ﻿using AssessmentPlatformDeveloper.Models;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
-namespace AssessmentPlatformDeveloper.Repositories
-{
-    public interface ICustomerRepository
-    {
+namespace AssessmentPlatformDeveloper.Repositories {
+
+    public interface ICustomerRepository {
+
         IEnumerable<Customer> GetAll();
 
         Customer Get(int id);
@@ -18,31 +17,26 @@ namespace AssessmentPlatformDeveloper.Repositories
         void Delete(int id);
     }
 
-    public class CustomerRepository : ICustomerRepository
-    {
+    public class CustomerRepository : ICustomerRepository {
+
         // Assuming you have a DbContext named 'context'
         private readonly List<Customer> customers = new List<Customer>();
 
-        public IEnumerable<Customer> GetAll()
-        {
+        public IEnumerable<Customer> GetAll() {
             return customers;
         }
 
-        public Customer Get(int id)
-        {
+        public Customer Get(int id) {
             return customers.FirstOrDefault(c => c.ID == id);
         }
 
-        public void Add(Customer customer)
-        {
+        public void Add(Customer customer) {
             customers.Add(customer);
         }
 
-        public void Update(Customer customer)
-        {
+        public void Update(Customer customer) {
             var existingCustomer = customers.FirstOrDefault(c => c.ID == customer.ID);
-            if (existingCustomer != null)
-            {
+            if (existingCustomer != null) {
                 // Update properties of existingCustomer based on the properties of customer
                 // For example:
                 existingCustomer.Name = customer.Name;
@@ -50,11 +44,9 @@ namespace AssessmentPlatformDeveloper.Repositories
             }
         }
 
-        public void Delete(int id)
-        {
+        public void Delete(int id) {
             var customer = customers.FirstOrDefault(c => c.ID == id);
-            if (customer != null)
-            {
+            if (customer != null) {
                 customers.Remove(customer);
             }
         }

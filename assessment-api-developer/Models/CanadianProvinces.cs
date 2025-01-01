@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel;
 
-namespace AssessmentPlatformDeveloper.Models
-{
-    public enum CanadianProvinces
-    {
+namespace AssessmentPlatformDeveloper.Models {
+
+    public enum CanadianProvinces {
         Alberta,
         [Description("British Columbia")] BritishColumbia,
         Manitoba,
