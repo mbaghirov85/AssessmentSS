@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
-namespace AssessmentPlatformDeveloper.Models
-{
+namespace AssessmentPlatformDeveloper.Models {
+
     [Serializable]
-    public class Customer
-    {
+    public class Customer {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

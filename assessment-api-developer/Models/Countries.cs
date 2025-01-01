@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel;
 
-namespace AssessmentPlatformDeveloper.Models
-{
-    public enum Countries
-    {
+namespace AssessmentPlatformDeveloper.Models {
+
+    public enum Countries {
         Canada,
         [Description("United States")] UnitedStates
     }
