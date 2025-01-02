@@ -60,7 +60,7 @@
 	<div>
 		<div class="container body-content">
 			<h2>Customer Registry</h2>
-			<asp:DropDownList runat="server" ID="CustomersDDL" CssClass="form-control"/>
+			<asp:DropDownList runat="server" ID="ddlCustomers" CssClass="form-control"/>
 		</div>
 
 		<div class="container body-content">
@@ -73,69 +73,79 @@
 						<div class="col-md-6">
 							<h1>Add customer</h1>
 							<div class="form-group">
-								<asp:Label ID="CustomerNameLabel" runat="server" Text="Name" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerName" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="txtCustomerName" runat="server" Text="Name" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="lblCustomerName" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerAddressLabel" runat="server" Text="Address" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerAddress" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerAddress" runat="server" Text="Address" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerAddress" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerEmailLabel" runat="server" Text="Email" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerEmail" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerEmail" runat="server" Text="Email" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerEmail" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerPhoneLabel" runat="server" Text="Phone" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerPhone" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerPhone" runat="server" Text="Phone" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerPhone" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerCityLabel" runat="server" Text="City" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerCity" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerCity" runat="server" Text="City" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerCity" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerStateLabel" runat="server" Text="Province/State" CssClass="form-label"></asp:Label>
-								<asp:DropDownList ID="StateDropDownList" runat="server" CssClass="form-control"/>
+								<asp:Label ID="lblCustomerState" runat="server" Text="Province/State" CssClass="form-label"></asp:Label>
+								<asp:DropDownList ID="ddlState" runat="server" CssClass="form-control"/>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerZipLabel" runat="server" Text="Postal/Zip Code" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerZip" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerZip" runat="server" Text="Postal/Zip Code" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerZip" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerCountryLabel" runat="server" Text="Country" CssClass="form-label"></asp:Label>
-								<asp:DropDownList ID="CountryDropDownList" runat="server" CssClass="form-control"/>
+								<asp:Label ID="lblCustomerCountry" runat="server" Text="Country" CssClass="form-label"></asp:Label>
+								<asp:DropDownList ID="ddlCountry" runat="server" CssClass="form-control"/>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="CustomerNotesLabel" runat="server" Text="Notes" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="CustomerNotes" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerNotes" runat="server" Text="Notes" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerNotes" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<h1>Customer contact details</h1>
 
 							<div class="form-group">
-								<asp:Label ID="ContactNameLabel" runat="server" Text="Name" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="ContactName" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblContactName" runat="server" Text="Name" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtContactName" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="ContactEmailLabel" runat="server" Text="Email" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="ContactEmail" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblContactTitle" runat="server" Text="Contact Title" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtContactTitle" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="ContactPhoneLabel" class="col-form-label" runat="server" Text="Phone" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="ContactPhone" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblContactNotes" runat="server" Text="Notes" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtContactNotes" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Button ID="AddButton" class="btn btn-primary btn-md" runat="server" Text="Add" OnClick="AddButton_Click" />
+								<asp:Label ID="lblContactEmail" runat="server" Text="Email" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtContactEmail" runat="server" CssClass="form-control"></asp:TextBox>
+							</div>
+
+							<div class="form-group">
+								<asp:Label ID="lblContactPhone" class="col-form-label" runat="server" Text="Phone" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtContactPhone" runat="server" CssClass="form-control"></asp:TextBox>
+							</div>
+
+							<div class="form-group">
+								<asp:Button ID="btnAdd" class="btn btn-primary btn-md" runat="server" Text="Add" OnClick="AddButton_Click" />
 							</div>
 						</div>
 					</div>
