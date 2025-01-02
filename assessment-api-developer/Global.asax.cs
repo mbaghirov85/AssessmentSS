@@ -11,104 +11,95 @@ using System.Web.Compilation;
 using System.Web.UI;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using AssessmentPlatformDeveloper.Services;
+using AssessmentPlatformDeveloper.App_Start;
 using SimpleInjector.Integration.Web;
+using System.Web.Http;
 
-namespace AssessmentPlatformDeveloper
-{
-	public sealed class PageInitializerModule : IHttpModule
-	{
-		public static void Initialize()
-		{
-			DynamicModuleUtility.RegisterModule(typeof(PageInitializerModule));
-		}
+namespace AssessmentPlatformDeveloper {
 
-		void IHttpModule.Init(HttpApplication app)
-		{
-			app.PreRequestHandlerExecute += (sender, e) =>
-			{
-				var handler = app.Context.CurrentHandler;
-				if (handler != null)
-				{
-					string name = handler.GetType().Assembly.FullName;
-					if (!name.StartsWith("System.Web") &&
-						!name.StartsWith("Microsoft"))
-					{
-						Global.InitializeHandler(handler);
-					}
-				}
-			};
-		}
+    public sealed class PageInitializerModule : IHttpModule {
 
-		void IHttpModule.Dispose() { }
-	}
+        public static void Initialize() {
+            DynamicModuleUtility.RegisterModule(typeof(PageInitializerModule));
+        }
 
-	public class Global : HttpApplication
-	{
-		private static Container container;
+        void IHttpModule.Init(HttpApplication app) {
+            app.PreRequestHandlerExecute += (sender, e) => {
+                var handler = app.Context.CurrentHandler;
+                if (handler != null) {
+                    string name = handler.GetType().Assembly.FullName;
+                    if (!name.StartsWith("System.Web") &&
+                        !name.StartsWith("Microsoft")) {
+                        Global.InitializeHandler(handler);
+                    }
+                }
+            };
+        }
 
-		public static void InitializeHandler(IHttpHandler handler)
-		{
-			var handlerType = handler is Page
-				? handler.GetType().BaseType
-				: handler.GetType();
-			container.GetRegistration(handlerType, true).Registration
-				.InitializeInstance(handler);
-		}
+        void IHttpModule.Dispose() {
+        }
+    }
 
-		void Application_Start(object sender, EventArgs e)
-		{
+    public class Global : HttpApplication {
+        private static Container container;
 
-			// Code that runs on application startup
-			RouteConfig.RegisterRoutes(RouteTable.Routes);
-			BundleConfig.RegisterBundles(BundleTable.Bundles);
+        public static void InitializeHandler(IHttpHandler handler) {
+            var handlerType = handler is Page
+                ? handler.GetType().BaseType
+                : handler.GetType();
+            container.GetRegistration(handlerType, true).Registration
+                .InitializeInstance(handler);
+        }
 
+        private void Application_Start(object sender, EventArgs e) {
+            // Code that runs on application startup
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-			Bootstrap();
-		}
+            GlobalConfiguration.Configure(WebApiConfig.Register);
 
-		private static void Bootstrap()
-		{
-			// 1. Create a new Simple Injector container.
-			var container = new Container();
+            Bootstrap();
+        }
 
-			container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+        private static void Bootstrap() {
+            // 1. Create a new Simple Injector container.
+            var container = new Container();
 
-			// 2. Configure the container (register)
-			container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
-			container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
+            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-			// Register your Page classes to allow them to be verified and diagnosed.
-			RegisterWebPages(container);
-			container.Options.ResolveUnregisteredConcreteTypes = true;
+            // 2. Configure the container (register)
+            container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
+            container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
 
-			// 3. Store the container for use by Page classes.
-			Global.container = container;
-			// 3. Verify the container's configuration.
-			container.Verify();
+            // Register your Page classes to allow them to be verified and diagnosed.
+            RegisterWebPages(container);
+            container.Options.ResolveUnregisteredConcreteTypes = true;
 
-			HttpContext.Current.Application["DIContainer"] = container;
-		}
+            // 3. Store the container for use by Page classes.
+            Global.container = container;
+            // 3. Verify the container's configuration.
+            container.Verify();
 
-		private static void RegisterWebPages(Container container)
-		{
-			var pageTypes =
-				from assembly in BuildManager.GetReferencedAssemblies().Cast<Assembly>()
-				where !assembly.IsDynamic
-				where !assembly.GlobalAssemblyCache
-				from type in assembly.GetExportedTypes()
-				where type.IsSubclassOf(typeof(Page))
-				where !type.IsAbstract && !type.IsGenericType
-				select type;
+            HttpContext.Current.Application["DIContainer"] = container;
+        }
 
-			foreach (var type in pageTypes)
-			{
-				var reg = Lifestyle.Transient.CreateRegistration(type, container);
-				reg.SuppressDiagnosticWarning(
-					DiagnosticType.DisposableTransientComponent,
-					"ASP.NET creates and disposes page classes for us.");
-				container.AddRegistration(type, reg);
-			}
-		}
+        private static void RegisterWebPages(Container container) {
+            var pageTypes =
+                from assembly in BuildManager.GetReferencedAssemblies().Cast<Assembly>()
+                where !assembly.IsDynamic
+                where !assembly.GlobalAssemblyCache
+                from type in assembly.GetExportedTypes()
+                where type.IsSubclassOf(typeof(Page))
+                where !type.IsAbstract && !type.IsGenericType
+                select type;
 
-	}
+            foreach (var type in pageTypes) {
+                var reg = Lifestyle.Transient.CreateRegistration(type, container);
+                reg.SuppressDiagnosticWarning(
+                    DiagnosticType.DisposableTransientComponent,
+                    "ASP.NET creates and disposes page classes for us.");
+                container.AddRegistration(type, reg);
+            }
+        }
+    }
 }
