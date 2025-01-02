@@ -18,6 +18,18 @@ namespace AssessmentPlatformDeveloper {
         private static List<ListItem> states;
 
         protected void Page_Load(object sender, EventArgs e) {
+            if (Request.HttpMethod == "GET" && Request.Url.AbsolutePath.Contains("/api/customers")) {
+                var testContainer = (Container)HttpContext.Current.Application["DIContainer"];
+                var customerService = testContainer.GetInstance<ICustomerService>();
+
+                var allCustomers = customerService.GetAllCustomers();
+
+                // Serialize customers to JSON and write to response
+                Response.ContentType = "application/json";
+                Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(allCustomers));
+                Response.End();
+            }
+
             if (!IsPostBack) {
                 var testContainer = (Container)HttpContext.Current.Application["DIContainer"];
                 var customerService = testContainer.GetInstance<ICustomerService>();
