@@ -16,7 +16,6 @@ namespace AssessmentPlatformDeveloper.App_Start {
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new {
-                    controller = "Customers",
                     id = RouteParameter.Optional
                 }
             );

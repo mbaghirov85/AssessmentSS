@@ -62,6 +62,8 @@ namespace AssessmentPlatformDeveloper {
         }
 
         private static void Bootstrap() {
+            string apiBaseUrl = GetApiBaseUrl();
+
             // 1. Create a new Simple Injector container.
             var container = new Container();
 
@@ -70,6 +72,7 @@ namespace AssessmentPlatformDeveloper {
             // 2. Configure the container (register)
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
             container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
+            container.Register<IApiCustomerService>(() => new ApiCustomerService(apiBaseUrl), Lifestyle.Singleton);
 
             // Register your Page classes to allow them to be verified and diagnosed.
             RegisterWebPages(container);
@@ -81,6 +84,17 @@ namespace AssessmentPlatformDeveloper {
             container.Verify();
 
             HttpContext.Current.Application["DIContainer"] = container;
+        }
+
+        private static string GetApiBaseUrl() {
+            var scheme = HttpContext.Current.Request.Url.Scheme; // "http" or "https"
+            var authority = HttpContext.Current.Request.Url.Authority; // "localhost:1234" or "www.example.com"
+            var appPath = HttpContext.Current.Request.ApplicationPath.TrimEnd('/'); // "/MyApp" or ""
+
+            // Retrieve API path from configuration
+            var apiPath = System.Configuration.ConfigurationManager.AppSettings["ApiPath"] ?? "/api/customers";
+
+            return $"{scheme}://{authority}{appPath}{apiPath}";
         }
 
         private static void RegisterWebPages(Container container) {
