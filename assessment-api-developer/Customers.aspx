@@ -59,8 +59,12 @@
 
 	<div>
 		<div class="container body-content">
+			<asp:Label ID="lblError" runat="server" Text="" CssClass="form-label"></asp:Label>
+		</div>
+
+		<div class="container body-content">
 			<h2>Customer Registry</h2>
-			<asp:DropDownList runat="server" ID="ddlCustomers" CssClass="form-control"/>
+			<asp:DropDownList runat="server" ID="ddlCustomers" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlCustomers_SelectedIndexChanged"/>
 		</div>
 
 		<div class="container body-content">
@@ -73,8 +77,8 @@
 						<div class="col-md-6">
 							<h1>Add customer</h1>
 							<div class="form-group">
-								<asp:Label ID="txtCustomerName" runat="server" Text="Name" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="lblCustomerName" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:Label ID="lblCustomerName" runat="server" Text="Name" CssClass="form-label"></asp:Label>
+								<asp:TextBox ID="txtCustomerName" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
@@ -93,23 +97,23 @@
 							</div>
 
 							<div class="form-group">
+								<asp:Label ID="lblCustomerCountry" runat="server" Text="Country" CssClass="form-label"></asp:Label>
+								<asp:DropDownList ID="ddlCountry" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlCountry_SelectedIndexChanged"/>
+							</div>
+
+							<div class="form-group">
 								<asp:Label ID="lblCustomerCity" runat="server" Text="City" CssClass="form-label"></asp:Label>
 								<asp:TextBox ID="txtCustomerCity" runat="server" CssClass="form-control"></asp:TextBox>
 							</div>
 
 							<div class="form-group">
-								<asp:Label ID="lblCustomerState" runat="server" Text="Province/State" CssClass="form-label"></asp:Label>
+								<asp:Label ID="lblCustomerState" runat="server" Text="Province" CssClass="form-label"></asp:Label>
 								<asp:DropDownList ID="ddlState" runat="server" CssClass="form-control"/>
 							</div>
 
 							<div class="form-group">
 								<asp:Label ID="lblCustomerZip" runat="server" Text="Postal/Zip Code" CssClass="form-label"></asp:Label>
 								<asp:TextBox ID="txtCustomerZip" runat="server" CssClass="form-control"></asp:TextBox>
-							</div>
-
-							<div class="form-group">
-								<asp:Label ID="lblCustomerCountry" runat="server" Text="Country" CssClass="form-label"></asp:Label>
-								<asp:DropDownList ID="ddlCountry" runat="server" CssClass="form-control"/>
 							</div>
 
 							<div class="form-group">
@@ -145,7 +149,11 @@
 							</div>
 
 							<div class="form-group">
-								<asp:Button ID="btnAdd" class="btn btn-primary btn-md" runat="server" Text="Add" OnClick="AddButton_Click" />
+								<asp:Button ID="btnAdd" class="btn btn-primary btn-md" runat="server" Text="Add" OnClick="btnAdd_Click" />
+							</div>
+
+							<div class="form-group">
+								<asp:Button ID="btnDelete" visible="false" class="btn btn-primary btn-md" runat="server" Text="Delete" OnClick="btnDelete_Click" />
 							</div>
 						</div>
 					</div>
