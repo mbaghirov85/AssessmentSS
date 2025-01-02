@@ -35,13 +35,11 @@ namespace AssessmentPlatformDeveloper.Services {
         public async Task<List<Customer>> GetAllCustomers() {
             try {
                 var response = await _httpClient.GetAsync($"{_apiBaseUrl}");
-                if (response.IsSuccessStatusCode) {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<Customer>>(json);
-                }
-                throw new Exception($"Failed to fetch customers: {response.ReasonPhrase}");
-            } catch (HttpRequestException ex) {
-                throw new Exception("A network error occurred while fetching customers.", ex);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Customer>>(json);
+            } catch (Exception ex) {
+                throw new Exception($"Failed to fetch all customers", ex);
             }
         }
 
@@ -49,41 +47,45 @@ namespace AssessmentPlatformDeveloper.Services {
         public async Task<Customer> GetCustomer(int id) {
             try {
                 var response = await _httpClient.GetAsync($"{_apiBaseUrl}/{id}");
-                if (response.IsSuccessStatusCode) {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Customer>(json);
-                }
-                throw new Exception($"Failed to fetch customer with ID {id}: {response.ReasonPhrase}");
-            } catch (HttpRequestException ex) {
-                throw new Exception("A network error occurred while fetching customers.", ex);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Customer>(json);
+            } catch (Exception ex) {
+                throw new Exception($"Failed to fetch customer with ID {id}:", ex);
             }
         }
 
         // POST: Add a new customer
         public async Task AddCustomer(Customer customer) {
-            var jsonContent = JsonConvert.SerializeObject(customer);
-            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_apiBaseUrl}", content);
-            if (!response.IsSuccessStatusCode) {
-                throw new Exception($"Failed to add customer: {response.ReasonPhrase}");
+            try {
+                var jsonContent = JsonConvert.SerializeObject(customer);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync($"{_apiBaseUrl}", content);
+                response.EnsureSuccessStatusCode();
+            } catch (Exception ex) {
+                throw new Exception($"Failed to add customer", ex);
             }
         }
 
         // PUT: Update a customer
         public async Task UpdateCustomer(Customer customer) {
-            var jsonContent = JsonConvert.SerializeObject(customer);
-            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{customer.ID}", content);
-            if (!response.IsSuccessStatusCode) {
-                throw new Exception($"Failed to update customer with ID {customer.ID}: {response.ReasonPhrase}");
+            try {
+                var jsonContent = JsonConvert.SerializeObject(customer);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{customer.ID}", content);
+                response.EnsureSuccessStatusCode();
+            } catch (Exception ex) {
+                throw new Exception($"Failed to update customer with ID {customer.ID}", ex);
             }
         }
 
         // DELETE: Delete a customer
         public async Task DeleteCustomer(int id) {
-            var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/{id}");
-            if (!response.IsSuccessStatusCode) {
-                throw new Exception($"Failed to delete customer with ID {id}: {response.ReasonPhrase}");
+            try {
+                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/{id}");
+                response.EnsureSuccessStatusCode();
+            } catch (Exception ex) {
+                throw new Exception($"Failed to delete customer with ID {id}", ex);
             }
         }
     }
