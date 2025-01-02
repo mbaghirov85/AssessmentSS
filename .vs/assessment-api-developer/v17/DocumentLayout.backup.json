@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|solutionrelative:assessment-api-developer\\customers.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|c:\\projects\\assessmentss\\assessment-api-developer\\assessment-api-developer\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|solutionrelative:assessment-api-developer\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|c:\\projects\\assessmentss\\assessment-api-developer\\assessment-api-developer\\customers.aspx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|solutionrelative:assessment-api-developer\\customers.aspx||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|c:\\projects\\assessmentss\\assessment-api-developer\\assessment-api-developer\\repositories\\customersrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|solutionrelative:assessment-api-developer\\repositories\\customersrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|c:\\projects\\assessmentss\\assessment-api-developer\\assessment-api-developer\\services\\apicustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB0C76FD-DE18-4332-A0E8-EC9399D928E0}|assessment-api-developer\\assessment-api-developer.csproj|solutionrelative:assessment-api-developer\\services\\apicustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,27 +35,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CustomersRepository.cs",
-              "DocumentMoniker": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Repositories\\CustomersRepository.cs",
-              "RelativeDocumentMoniker": "assessment-api-developer\\Repositories\\CustomersRepository.cs",
-              "ToolTip": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Repositories\\CustomersRepository.cs",
-              "RelativeToolTip": "assessment-api-developer\\Repositories\\CustomersRepository.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAA7wDMAAAAhAAAAAAAAAA==",
+              "Title": "ApiCustomerService.cs",
+              "DocumentMoniker": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Services\\ApiCustomerService.cs",
+              "RelativeDocumentMoniker": "assessment-api-developer\\Services\\ApiCustomerService.cs",
+              "ToolTip": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Services\\ApiCustomerService.cs",
+              "RelativeToolTip": "assessment-api-developer\\Services\\ApiCustomerService.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAwwFUAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T01:41:12.25Z",
+              "WhenOpened": "2025-01-02T09:09:57.113Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Models\\Customer.cs",
-              "RelativeDocumentMoniker": "assessment-api-developer\\Models\\Customer.cs",
-              "ToolTip": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Models\\Customer.cs",
-              "RelativeToolTip": "assessment-api-developer\\Models\\Customer.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAUwBMAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-01T11:23:28.473Z",
+              "Title": "Customers.aspx",
+              "DocumentMoniker": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Customers.aspx",
+              "RelativeDocumentMoniker": "assessment-api-developer\\Customers.aspx",
+              "ToolTip": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Customers.aspx",
+              "RelativeToolTip": "assessment-api-developer\\Customers.aspx",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAQwJsAAACBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-01-02T08:02:03.707Z",
               "EditorCaption": ""
             },
             {
@@ -66,7 +66,7 @@
               "RelativeDocumentMoniker": "assessment-api-developer\\Customers.aspx.cs",
               "ToolTip": "C:\\Projects\\AssessmentSS\\assessment-api-developer\\assessment-api-developer\\Customers.aspx.cs",
               "RelativeToolTip": "assessment-api-developer\\Customers.aspx.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAAABsAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAACgAAAAAAAAAAAAIwCAAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-01T11:14:28.205Z",
               "EditorCaption": ""

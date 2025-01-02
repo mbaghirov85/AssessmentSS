@@ -62,3 +62,9 @@ C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\obj\Debug\assessme.88B89985.Up2Date
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\obj\Debug\assessment-platform-developer.Tests.dll
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\obj\Debug\assessment-platform-developer.Tests.pdb
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Web.Http.dll
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Web.Http.WebHost.dll
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Net.Http.Formatting.dll
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Web.Http.xml
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Web.Http.WebHost.xml
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer.Tests\bin\Debug\System.Net.Http.Formatting.xml

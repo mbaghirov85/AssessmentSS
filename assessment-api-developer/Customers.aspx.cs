@@ -32,7 +32,6 @@ namespace AssessmentPlatformDeveloper {
 
         protected async void Page_Load(object sender, EventArgs e) {
             if (!IsPostBack) {
-                string apiBaseUrl = GetApiBaseUrl();
                 var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
                 _apiCustomerService = container.GetInstance<IApiCustomerService>();
 
@@ -46,17 +45,6 @@ namespace AssessmentPlatformDeveloper {
                 InitLists();
                 PopulateDdlCountry();
             }
-        }
-
-        private string GetApiBaseUrl() {
-            var scheme = HttpContext.Current.Request.Url.Scheme; // "http" or "https"
-            var authority = HttpContext.Current.Request.Url.Authority; // "localhost:1234" or "www.example.com"
-            var appPath = HttpContext.Current.Request.ApplicationPath.TrimEnd('/'); // add virtual directory
-
-            // Retrieve API path from configuration
-            var apiPath = System.Configuration.ConfigurationManager.AppSettings["ApiPath"] ?? "/api/customers";
-
-            return $"{scheme}://{authority}{appPath}{apiPath}";
         }
 
         private void InitLists() {
@@ -161,7 +149,7 @@ namespace AssessmentPlatformDeveloper {
         protected async void btnDelete_Click(object sender, EventArgs e) {
             try {
                 if (customerID != 0) {
-                    _apiCustomerService.DeleteCustomer(customerID);
+                    await _apiCustomerService.DeleteCustomer(customerID);
                 } else {
                     lblError.Text = "Please select a proper customer";
                 }
@@ -179,32 +167,35 @@ namespace AssessmentPlatformDeveloper {
         protected async void ddlCustomers_SelectedIndexChanged(object sender, EventArgs e) {
             // If real cutomer is selected
             if (ddlCustomers.SelectedIndex > 0) {
-                customerID = int.Parse(ddlCustomers.SelectedValue);
-                btnDelete.Visible = true;
-                try {
-                    // Get customer details
-                    var customer = await _apiCustomerService.GetCustomer(customerID);
+                if (!string.IsNullOrEmpty(ddlCustomers.SelectedValue) && int.TryParse(ddlCustomers.SelectedValue, out customerID)) {
+                    btnDelete.Visible = true;
+                    try {
+                        // Get customer details
+                        var customer = await _apiCustomerService.GetCustomer(customerID);
 
-                    // Populate form fields with retrieved customer data
-                    txtCustomerName.Text = customer.Name;
-                    txtCustomerAddress.Text = customer.Address;
-                    txtCustomerEmail.Text = customer.Email;
-                    txtCustomerPhone.Text = customer.Phone;
-                    txtCustomerCity.Text = customer.City;
-                    ddlCountry.SelectedValue = customer.Country;
-                    PopulateDdlState(customer.State);
-                    txtCustomerZip.Text = customer.Zip;
-                    txtCustomerNotes.Text = customer.Notes;
-                    txtContactName.Text = customer.ContactName;
-                    txtContactPhone.Text = customer.ContactPhone;
-                    txtContactEmail.Text = customer.ContactEmail;
-                    txtContactTitle.Text = customer.ContactTitle;
-                    txtContactNotes.Text = customer.ContactNotes;
+                        // Populate form fields with retrieved customer data
+                        txtCustomerName.Text = customer.Name;
+                        txtCustomerAddress.Text = customer.Address;
+                        txtCustomerEmail.Text = customer.Email;
+                        txtCustomerPhone.Text = customer.Phone;
+                        txtCustomerCity.Text = customer.City;
+                        ddlCountry.SelectedValue = customer.Country;
+                        PopulateDdlState(customer.State);
+                        txtCustomerZip.Text = customer.Zip;
+                        txtCustomerNotes.Text = customer.Notes;
+                        txtContactName.Text = customer.ContactName;
+                        txtContactPhone.Text = customer.ContactPhone;
+                        txtContactEmail.Text = customer.ContactEmail;
+                        txtContactTitle.Text = customer.ContactTitle;
+                        txtContactNotes.Text = customer.ContactNotes;
 
-                    btnAdd.Text = "Update";
-                    lblError.Text = "";
-                } catch (Exception ex) {
-                    lblError.Text = $"Error fetching customer details: {ex.Message}";
+                        btnAdd.Text = "Update";
+                        lblError.Text = "";
+                    } catch (Exception ex) {
+                        lblError.Text = $"Error fetching customer details: {ex.Message}";
+                    }
+                } else {
+                    lblError.Text = "Please select a valid customer";
                 }
             } else {
                 // Clear form fields if "Add new customer" is selected
