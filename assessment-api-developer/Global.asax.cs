@@ -14,6 +14,10 @@ using AssessmentPlatformDeveloper.Services;
 using AssessmentPlatformDeveloper.App_Start;
 using SimpleInjector.Integration.Web;
 using System.Web.Http;
+using System.Diagnostics;
+using SimpleInjector.Integration.WebApi;
+using AssessmentPlatformDeveloper.Controllers;
+using SimpleInjector.Lifestyles;
 
 namespace AssessmentPlatformDeveloper {
 
@@ -41,7 +45,7 @@ namespace AssessmentPlatformDeveloper {
     }
 
     public class Global : HttpApplication {
-        private static Container container;
+        private static Container container = new Container();
 
         public static void InitializeHandler(IHttpHandler handler) {
             var handlerType = handler is Page
@@ -55,38 +59,34 @@ namespace AssessmentPlatformDeveloper {
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-
+            GlobalConfiguration.Configure((config) => WebApiConfig.Register(config));
             Bootstrap();
         }
 
         private static void Bootstrap() {
-            string apiBaseUrl = GetApiBaseUrl();
-
             // 1. Create a new Simple Injector container.
             var container = new Container();
 
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             // 2. Configure the container (register)
+            string apiBaseUrl = GetApiBaseUrl();
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
-            container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
+            container.Register<ICustomerService>(() => new CustomerService(new CustomerRepository()), Lifestyle.Singleton);
             container.Register<IApiCustomerService>(() => new ApiCustomerService(apiBaseUrl), Lifestyle.Singleton);
+            container.Register<CustomersController>(new AsyncScopedLifestyle());
 
-            // Register your Page classes to allow them to be verified and diagnosed.
-            RegisterWebPages(container);
-            container.Options.ResolveUnregisteredConcreteTypes = true;
-
-            // 3. Store the container for use by Page classes.
-            Global.container = container;
             // 3. Verify the container's configuration.
             container.Verify();
+
+            GlobalConfiguration.Configuration.DependencyResolver =
+            new SimpleInjectorWebApiDependencyResolver(container);
 
             HttpContext.Current.Application["DIContainer"] = container;
         }
 
         private static string GetApiBaseUrl() {
+            /*
             var scheme = HttpContext.Current.Request.Url.Scheme; // "http" or "https"
             var authority = HttpContext.Current.Request.Url.Authority; // "localhost:1234" or "www.example.com"
             var appPath = HttpContext.Current.Request.ApplicationPath.TrimEnd('/'); // "/MyApp" or ""
@@ -95,6 +95,8 @@ namespace AssessmentPlatformDeveloper {
             var apiPath = System.Configuration.ConfigurationManager.AppSettings["ApiPath"] ?? "/api/customers";
 
             return $"{scheme}://{authority}{appPath}{apiPath}";
+            */
+            return "https://localhost:44358/api/customers";
         }
 
         private static void RegisterWebPages(Container container) {
