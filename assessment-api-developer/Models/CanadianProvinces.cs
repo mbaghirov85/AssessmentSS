@@ -3,6 +3,7 @@
 namespace AssessmentPlatformDeveloper.Models {
 
     public enum CanadianProvinces {
+        [Description("Select Province")] SelectProvince,
         Alberta,
         [Description("British Columbia")] BritishColumbia,
         Manitoba,
