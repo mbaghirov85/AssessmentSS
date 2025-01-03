@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace assessment_platform_developer
+namespace AssessmentPlatformDeveloper
 {
 	public partial class SiteMaster : MasterPage
 	{

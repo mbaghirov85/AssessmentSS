@@ -1,113 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using Newtonsoft.Json;
 
-namespace assessment_platform_developer.Models
-{
-	public enum Countries
-	{
-		Canada,
-		[Description("United States")]
-		UnitedStates
-	}
-	
-	public enum USStates
-	{
-		Alabama,
-		Alaska,
-		Arizona,
-		Arkansas,
-		California,
-		Colorado,
-		Connecticut,
-		Delaware,
-		Florida,
-		Georgia,
-		Hawaii,
-		Idaho,
-		Illinois,
-		Indiana,
-		Iowa,
-		Kansas,
-		Kentucky,
-		Louisiana,
-		Maine,
-		Maryland,
-		Massachusetts,
-		Michigan,
-		Minnesota,
-		Mississippi,
-		Missouri,
-		Montana,
-		Nebraska,
-		Nevada,
-		[Description("New Hampshire")] NewHampshire,
-		[Description("New Jersey")] NewJersey,
-		[Description("New Mexico")] NewMexico,
-		[Description("New York")] NewYork,
-		[Description("North Carolina")] NorthCarolina,
-		[Description("North Dakota")] NorthDakota,
-		Ohio,
-		Oklahoma,
-		Oregon,
-		Pennsylvania,
-		[Description("Rhode Island")] RhodeIsland,
-		[Description("South Carolina")] SouthCarolina,
-		[Description("South Dakota")] SouthDakota,
-		Tennessee,
-		Texas,
-		Utah,
-		Vermont,
-		Virginia,
-		Washington,
-		[Description("West Virginia")] WestVirginia,
-		Wisconsin,
-		Wyoming
-	}
+namespace AssessmentPlatformDeveloper.Models {
 
-	public enum CanadianProvinces
-	{
-		Alberta,
-		[Description("British Columbia")] BritishColumbia,
-		Manitoba,
-		NewBrunswick,
-		[Description("Newfoundland and Labrador")] NewfoundlandAndLabrador,
-		[Description("Nova Scotia")] NovaScotia,
-		Ontario,
-		[Description("Prince Edward Island")] PrinceEdwardIsland,
-		Quebec,
-		Saskatchewan,
-		[Description("Northwest Territories")] NorthwestTerritories,
-		Nunavut,
-		Yukon
-	}
+    [Serializable]
+    public class Customer {
 
-	[Serializable]
-	public class Customer
-	{
-		public int ID { get; set; }
-		public string Name { get; set; }
-		public string Address { get; set; }
-		public string Email { get; set; }
-		public string Phone { get; set; }
-		public string City { get; set; }
-		public string State { get; set; }
-		public string Zip { get; set; }
-		public string Country { get; set; }
-		public string Notes { get; set; }
-		public string ContactName { get; set; }
-		public string ContactPhone { get; set; }
-		public string ContactEmail { get; set; }
-		public string ContactTitle { get; set; }
-		public string ContactNotes { get; set; }
+        [JsonProperty("ID")]
+        public int ID { get; set; }
 
-	}
+        [JsonProperty("Name")]
+        public string Name { get; set; }
 
-	public class CustomerDBContext : DbContext
-	{
-		public DbSet<Customer> Customers { get; set; }
-	}
+        [JsonProperty("Address")]
+        public string Address { get; set; }
+
+        [JsonProperty("Email")]
+        public string Email { get; set; }
+
+        [JsonProperty("Phone")]
+        public string Phone { get; set; }
+
+        [JsonProperty("City")]
+        public string City { get; set; }
+
+        [JsonProperty("State")]
+        public string State { get; set; }
+
+        [JsonProperty("Zip")]
+        public string Zip { get; set; }
+
+        [JsonProperty("Country")]
+        public string Country { get; set; }
+
+        [JsonProperty("Notes")]
+        public string Notes { get; set; }
+
+        [JsonProperty("ContactName")]
+        public string ContactName { get; set; }
+
+        [JsonProperty("ContactPhone")]
+        public string ContactPhone { get; set; }
+
+        [JsonProperty("ContactEmail")]
+        public string ContactEmail { get; set; }
+
+        [JsonProperty("ContactTitle")]
+        public string ContactTitle { get; set; }
+
+        [JsonProperty("ContactNotes")]
+        public string ContactNotes { get; set; }
+    }
 }
