@@ -45,7 +45,7 @@ namespace AssessmentPlatformDeveloper {
     }
 
     public class Global : HttpApplication {
-        private static Container container = new Container();
+        private static readonly Container container = new Container();
 
         public static void InitializeHandler(IHttpHandler handler) {
             var handlerType = handler is Page
@@ -97,25 +97,6 @@ namespace AssessmentPlatformDeveloper {
             return $"{scheme}://{authority}{appPath}{apiPath}";
             */
             return "https://localhost:44358/api/customers";
-        }
-
-        private static void RegisterWebPages(Container container) {
-            var pageTypes =
-                from assembly in BuildManager.GetReferencedAssemblies().Cast<Assembly>()
-                where !assembly.IsDynamic
-                where !assembly.GlobalAssemblyCache
-                from type in assembly.GetExportedTypes()
-                where type.IsSubclassOf(typeof(Page))
-                where !type.IsAbstract && !type.IsGenericType
-                select type;
-
-            foreach (var type in pageTypes) {
-                var reg = Lifestyle.Transient.CreateRegistration(type, container);
-                reg.SuppressDiagnosticWarning(
-                    DiagnosticType.DisposableTransientComponent,
-                    "ASP.NET creates and disposes page classes for us.");
-                container.AddRegistration(type, reg);
-            }
         }
     }
 }

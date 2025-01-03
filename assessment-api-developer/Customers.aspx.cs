@@ -56,7 +56,7 @@ namespace AssessmentPlatformDeveloper {
                     var customers = await _apiCustomerService.GetAllCustomers();
                     PopulateDdlCustomers(customers);
                 } catch (Exception ex) {
-                    lblError.Text = $"Error while loading page: {ex.ToString()}";
+                    lblError.Text = $"Error while loading page: {ex}";
                 }
 
                 InitLists();
