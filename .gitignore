@@ -1,2 +1,9 @@
-
-.codegpt
+.codegpt/
+.vs/
+CodeMaid.config
+assessment-api-developer/.vs/
+assessment-api-developer/bin/
+assessment-api-developer/obj/
+assessment-api-developer.Tests/.vs/
+assessment-api-developer.Tests/bin/
+assessment-api-developer.Tests/obj/
