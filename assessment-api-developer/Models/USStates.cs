@@ -3,6 +3,7 @@
 namespace AssessmentPlatformDeveloper.Models {
 
     public enum USStates {
+        [Description("Select State")] SelectProvince,
         Alabama,
         Alaska,
         Arizona,

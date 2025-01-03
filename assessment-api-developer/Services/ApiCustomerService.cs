@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using AssessmentPlatformDeveloper.Models;
 using System.Web;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 namespace AssessmentPlatformDeveloper.Services {
 
@@ -28,6 +29,8 @@ namespace AssessmentPlatformDeveloper.Services {
 
         public ApiCustomerService(string apiBaseUrl) {
             _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
             _apiBaseUrl = apiBaseUrl;
         }
 
@@ -71,8 +74,11 @@ namespace AssessmentPlatformDeveloper.Services {
         public async Task UpdateCustomer(Customer customer) {
             try {
                 var jsonContent = JsonConvert.SerializeObject(customer);
+                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>{jsonContent}");
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>StringContent created");
                 var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{customer.ID}", content);
+                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>PUT method executed");
                 response.EnsureSuccessStatusCode();
             } catch (Exception ex) {
                 throw new Exception($"Failed to update customer with ID {customer.ID}", ex);

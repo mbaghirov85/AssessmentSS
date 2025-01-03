@@ -5,36 +5,53 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AssessmentPlatformDeveloper.Services;
+using AssessmentPlatformDeveloper.Helpers;
 using Container = SimpleInjector.Container;
 using System.Web;
 
 namespace AssessmentPlatformDeveloper {
 
     public partial class Customers : Page {
-        private IApiCustomerService _apiCustomerService;
+
+        private IApiCustomerService _apiCustomerService {
+            get {
+                if (Session["ApiCustomerService"] == null) {
+                    var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
+                    Session["ApiCustomerService"] = container.GetInstance<IApiCustomerService>();
+                }
+                return (IApiCustomerService)Session["ApiCustomerService"];
+            }
+        }
 
         private List<ListItem> countries {
-            get => ViewState["Countries"] as List<ListItem> ?? new List<ListItem>();
-            set => ViewState["Countries"] = value;
+            get {
+                return Session["Countries"] as List<ListItem>;
+            }
+            set {
+                Session["Countries"] = value;
+            }
         }
 
         private List<ListItem> provinces {
-            get => ViewState["Provinces"] as List<ListItem> ?? new List<ListItem>();
-            set => ViewState["Provinces"] = value;
+            get {
+                return Session["Provinces"] as List<ListItem>;
+            }
+            set {
+                Session["Provinces"] = value;
+            }
         }
 
         private List<ListItem> states {
-            get => ViewState["States"] as List<ListItem> ?? new List<ListItem>();
-            set => ViewState["States"] = value;
+            get {
+                return Session["States"] as List<ListItem>;
+            }
+            set {
+                Session["States"] = value;
+            }
         }
-
-        private static int customerID = 0;
 
         protected async void Page_Load(object sender, EventArgs e) {
             if (!IsPostBack) {
-                var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
-                _apiCustomerService = container.GetInstance<IApiCustomerService>();
-
                 try {
                     var customers = await _apiCustomerService.GetAllCustomers();
                     PopulateDdlCustomers(customers);
@@ -44,6 +61,7 @@ namespace AssessmentPlatformDeveloper {
 
                 InitLists();
                 PopulateDdlCountry();
+                Session["customerID"] = 0;
             }
         }
 
@@ -51,41 +69,39 @@ namespace AssessmentPlatformDeveloper {
             countries = Enum.GetValues(typeof(Countries))
                 .Cast<Countries>()
                 .Select(item => new ListItem {
-                    Text = item.ToString(),
+                    Text = EnumExtensions.GetEnumDescription(item),
                     Value = ((int)item).ToString()
                 })
                 .ToList();
+            Session["Countries"] = countries;
 
             provinces = Enum.GetValues(typeof(CanadianProvinces))
                 .Cast<CanadianProvinces>()
                 .Select(item => new ListItem {
-                    Text = item.ToString(),
+                    Text = EnumExtensions.GetEnumDescription(item),
                     Value = ((int)item).ToString()
                 })
                 .ToList();
+            Session["Provinces"] = provinces;
 
             states = Enum.GetValues(typeof(USStates))
                 .Cast<USStates>()
                 .Select(item => new ListItem {
-                    Text = item.ToString(),
+                    Text = EnumExtensions.GetEnumDescription(item),
                     Value = ((int)item).ToString()
                 })
                 .ToList();
+            Session["States"] = states;
         }
 
         private void PopulateDdlCountry() {
             ddlCountry.Items.Clear();
-            ddlCountry.Items.Add(new ListItem("Select country", "0"));
             ddlCountry.Items.AddRange(countries.ToArray());
             ddlCountry.SelectedIndex = 0;
         }
 
         private void PopulateDdlState(string selectedValue) {
             ddlState.Items.Clear();
-            ddlState.Items.Add(new ListItem("", "0"));
-
-            ddlState.SelectedIndex = int.Parse(selectedValue);
-
             string selectedCountry = ddlCountry.SelectedValue;
             // Populate ddlState based on selected country
             if (selectedCountry == ((int)Countries.Canada).ToString()) { // Canada
@@ -95,19 +111,22 @@ namespace AssessmentPlatformDeveloper {
                 ddlState.Items.AddRange(states.ToArray());
                 lblCustomerState.Text = "State";
             }
+            ddlState.SelectedValue = selectedValue;
         }
 
         private void PopulateDdlCustomers(List<Customer> customers) {
             ddlCustomers.Items.Clear();
-            ddlCustomers.Items.Add(new ListItem("Add new customer"));
+            ddlCustomers.Items.Add(new ListItem("Add new customer", "0"));
 
             foreach (var customer in customers) {
+                System.Diagnostics.Debug.WriteLine($"Customer from Customers.aspx.DdlCustomers {customer.ID} with the name {customer.Name}");
                 ddlCustomers.Items.Add(new ListItem(customer.Name, customer.ID.ToString()));
             }
 
-            ddlCustomers.SelectedIndex = 0;
+            ddlCustomers.SelectedValue = "0";
             btnDelete.Visible = false;
             btnAdd.Text = "Add";
+            ClearFormFields();
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e) {
@@ -128,11 +147,16 @@ namespace AssessmentPlatformDeveloper {
                 ContactNotes = txtContactNotes.Text
             };
 
+            String action = "add";
             try {
-                if (customerID != 0) {
-                    customer.ID = customerID;
+                System.Diagnostics.Debug.WriteLine($"btnAdd=>{Session["customerID"]}");
+                if ((int)Session["customerID"] != 0) {
+                    System.Diagnostics.Debug.WriteLine($"btnAdd=>Updating");
+                    customer.ID = (int)Session["customerID"];
                     await _apiCustomerService.UpdateCustomer(customer);
                 } else {
+                    action = "updat";
+                    System.Diagnostics.Debug.WriteLine($"btnAdd=>Adding");
                     await _apiCustomerService.AddCustomer(customer);
                 }
 
@@ -140,38 +164,40 @@ namespace AssessmentPlatformDeveloper {
                 PopulateDdlCustomers(await _apiCustomerService.GetAllCustomers());
                 ClearFormFields();
 
-                lblError.Text = "Customer added successfully!";
+                lblError.Text = $"Customer {customer.Name} {action}ed successfully! ";
             } catch (Exception ex) {
-                lblError.Text = $"Error adding customer: {ex.Message}";
+                lblError.Text = $"Error {action}ing customer: {ex.Message}";
             }
         }
 
         protected async void btnDelete_Click(object sender, EventArgs e) {
             try {
-                if (customerID != 0) {
-                    await _apiCustomerService.DeleteCustomer(customerID);
+                if ((int)Session["customerID"] != 0) {
+                    await _apiCustomerService.DeleteCustomer((int)Session["customerID"]);
                 } else {
                     lblError.Text = "Please select a proper customer";
                 }
 
                 // Refresh dropdown and clear form fields
                 PopulateDdlCustomers(await _apiCustomerService.GetAllCustomers());
+                Session["customerID"] = 0;
                 ClearFormFields();
-
                 lblError.Text = "Customer deleted successfully!";
             } catch (Exception ex) {
-                lblError.Text = $"Error deleting customer ${customerID}: {ex.Message}";
+                lblError.Text = $"Error deleting customer ${(int)Session["customerID"]}: {ex.Message}";
             }
         }
 
         protected async void ddlCustomers_SelectedIndexChanged(object sender, EventArgs e) {
             // If real cutomer is selected
             if (ddlCustomers.SelectedIndex > 0) {
-                if (!string.IsNullOrEmpty(ddlCustomers.SelectedValue) && int.TryParse(ddlCustomers.SelectedValue, out customerID)) {
+                lblFormCaption.Text = "Update Customer";
+                if (!string.IsNullOrEmpty(ddlCustomers.SelectedValue)) {
+                    Session["customerID"] = int.Parse(ddlCustomers.SelectedValue);
                     btnDelete.Visible = true;
                     try {
                         // Get customer details
-                        var customer = await _apiCustomerService.GetCustomer(customerID);
+                        var customer = await _apiCustomerService.GetCustomer((int)Session["customerID"]);
 
                         // Populate form fields with retrieved customer data
                         txtCustomerName.Text = customer.Name;
@@ -200,8 +226,6 @@ namespace AssessmentPlatformDeveloper {
             } else {
                 // Clear form fields if "Add new customer" is selected
                 ClearFormFields();
-                btnAdd.Text = "Add";
-                btnDelete.Visible = false;
             }
         }
 
@@ -209,6 +233,7 @@ namespace AssessmentPlatformDeveloper {
             try {
                 PopulateDdlState("0");
                 txtCustomerZip.Text = "";
+                txtCustomerCity.Text = "";
                 lblError.Text = "";
             } catch (Exception ex) {
                 lblError.Text = $"Error populating states/provinces: {ex.Message}";
@@ -216,6 +241,8 @@ namespace AssessmentPlatformDeveloper {
         }
 
         public void ClearFormFields() {
+            Session["customerID"] = 0;
+            ddlCustomers.SelectedValue = "0";
             txtCustomerName.Text = string.Empty;
             txtCustomerAddress.Text = string.Empty;
             txtCustomerEmail.Text = string.Empty;
@@ -231,6 +258,9 @@ namespace AssessmentPlatformDeveloper {
             txtContactPhone.Text = string.Empty;
             txtContactEmail.Text = string.Empty;
             lblError.Text = "";
+            lblFormCaption.Text = "Add customer";
+            btnAdd.Text = "Add";
+            btnDelete.Visible = false;
         }
     }
 }

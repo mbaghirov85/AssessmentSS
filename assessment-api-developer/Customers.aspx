@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Customers.aspx.cs" Inherits="AssessmentPlatformDeveloper.Customers" %>
+﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" CodeBehind="Customers.aspx.cs" Inherits="AssessmentPlatformDeveloper.Customers" %>
 
 <!DOCTYPE html>
 
@@ -75,7 +75,7 @@
 					<div class="row justify-content-center">
 
 						<div class="col-md-6">
-							<h1>Add customer</h1>
+							<h1><asp:Label ID="lblFormCaption" runat="server" Text ="Add Customer" CssClass="form-label"></asp:Label></h1>
 							<div class="form-group">
 								<asp:Label ID="lblCustomerName" runat="server" Text="Name" CssClass="form-label"></asp:Label>
 								<asp:TextBox ID="txtCustomerName" runat="server" CssClass="form-control"></asp:TextBox>

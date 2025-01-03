@@ -158,3 +158,5 @@ C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\S
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\System.Net.Http.Formatting.xml
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\System.Web.Http.xml
 C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\System.Web.Http.WebHost.xml
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\SimpleInjector.Integration.WebApi.dll
+C:\Projects\AssessmentSS\assessment-api-developer\assessment-api-developer\bin\SimpleInjector.Integration.WebApi.xml
