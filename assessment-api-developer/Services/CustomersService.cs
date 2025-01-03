@@ -1,7 +1,9 @@
 ﻿using AssessmentPlatformDeveloper.Models;
 using AssessmentPlatformDeveloper.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AssessmentPlatformDeveloper.Services {
 
@@ -19,19 +21,19 @@ namespace AssessmentPlatformDeveloper.Services {
     }
 
     public class CustomerService : ICustomerService {
-        private readonly ICustomerRepository customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public CustomerService(ICustomerRepository customerRepository) {
-            this.customerRepository = customerRepository;
+            this._customerRepository = customerRepository;
         }
 
         public IEnumerable<Customer> GetAllCustomers() {
-            return customerRepository.GetAll();
+            return _customerRepository.GetAll();
         }
 
         public Customer GetCustomer(int id) {
             // ensure that customer exists
-            var customer = customerRepository.Get(id);
+            var customer = _customerRepository.Get(id);
             if (customer == null) {
                 throw new ArgumentException($"Customer with ID {id} does not exist.");
             }
@@ -43,12 +45,12 @@ namespace AssessmentPlatformDeveloper.Services {
             if (customer == null) {
                 throw new ArgumentNullException(nameof(customer), "Customer cannot be null.");
             }
-            customerRepository.Add(customer);
+            _customerRepository.Add(customer);
         }
 
         public void UpdateCustomer(Customer customer) {
             // ensure that customer exists
-            var existingCustomer = customerRepository.Get(customer.ID);
+            var existingCustomer = _customerRepository.Get(customer.ID);
             if (existingCustomer == null) {
                 throw new ArgumentException($"Cannot update. Customer with ID {customer.ID} does not exist.");
             }
@@ -96,22 +98,22 @@ namespace AssessmentPlatformDeveloper.Services {
             if (!string.IsNullOrEmpty(customer.ContactNotes))
                 existingCustomer.ContactNotes = customer.ContactNotes;
 
-            customerRepository.Update(existingCustomer);
+            _customerRepository.Update(existingCustomer);
 
             // if uncommiting this block then remove the next line which updates the customer repository
             */
 
-            customerRepository.Update(customer);
+            _customerRepository.Update(customer);
         }
 
         public void DeleteCustomer(int id) {
             // ensure that cusotmer exists
-            var existingCustomer = customerRepository.Get(id);
+            var existingCustomer = _customerRepository.Get(id);
             if (existingCustomer == null) {
                 throw new ArgumentException($"Cannot delete. Customer with ID {id} does not exist.");
             }
 
-            customerRepository.Delete(id);
+            _customerRepository.Delete(id);
         }
     }
 }
