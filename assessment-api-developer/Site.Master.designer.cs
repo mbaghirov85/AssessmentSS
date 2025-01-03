@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace assessment_platform_developer
+namespace AssessmentPlatformDeveloper
 {
 
 
