@@ -12,6 +12,8 @@ using System.Web.Http;
 using SimpleInjector.Integration.WebApi;
 using assessment_platform_developer.Controllers;
 using SimpleInjector.Lifestyles;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace assessment_platform_developer {
 
@@ -58,18 +60,23 @@ namespace assessment_platform_developer {
         }
 
         private static void Bootstrap() {
-            // 1. Create a new Simple Injector container.
+            // Create a new Simple Injector container.
             var container = new Container();
 
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            // 2. Configure the container (register)
+            // Create a single HttpClient instance
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+            container.RegisterInstance<HttpClient>(httpClient);
+
+            // Configure the container (register)
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
             container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
             container.Register<IRestfulCustomerService, RestfulCustomerService>(Lifestyle.Scoped);
             container.Register<CustomersController>(new AsyncScopedLifestyle());
 
-            // 3. Verify the container's configuration.
+            // Verify the container's configuration.
             container.Verify();
 
             GlobalConfiguration.Configuration.DependencyResolver =

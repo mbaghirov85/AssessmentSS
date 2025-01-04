@@ -7,6 +7,7 @@ using assessment_platform_developer.Models;
 using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
+using WebGrease.Extensions;
 
 namespace assessment_platform_developer.Services {
 
@@ -27,8 +28,8 @@ namespace assessment_platform_developer.Services {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
 
-        public RestfulCustomerService() {
-            _httpClient = new HttpClient();
+        public RestfulCustomerService(HttpClient httpClient) {
+            _httpClient = httpClient;
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
             _apiBaseUrl = GetApiBaseUrl();
@@ -43,9 +44,12 @@ namespace assessment_platform_developer.Services {
         public async Task<List<Customer>> GetAllCustomers() {
             try {
                 var response = await _httpClient.GetAsync($"{_apiBaseUrl}");
-                response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Customer>>(json);
+            } catch (HttpRequestException ex) {
+                throw new Exception($"HTTP request failed for GET {_apiBaseUrl}: {ex.Message}", ex);
+            } catch (JsonException ex) {
+                throw new Exception($"Failed to deserialize response from GET {_apiBaseUrl}: {ex.Message}", ex);
             } catch (Exception ex) {
                 throw new Exception($"Failed to fetch all customers", ex);
             }
@@ -55,9 +59,12 @@ namespace assessment_platform_developer.Services {
         public async Task<Customer> GetCustomer(int id) {
             try {
                 var response = await _httpClient.GetAsync($"{_apiBaseUrl}/{id}");
-                response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Customer>(json);
+            } catch (HttpRequestException ex) {
+                throw new Exception($"HTTP request failed for GET {_apiBaseUrl} by ID: {ex.Message}", ex);
+            } catch (JsonException ex) {
+                throw new Exception($"Failed to deserialize response from GET {_apiBaseUrl} by ID: {ex.Message}", ex);
             } catch (Exception ex) {
                 throw new Exception($"Failed to fetch customer with ID {id}:", ex);
             }
@@ -70,6 +77,10 @@ namespace assessment_platform_developer.Services {
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync($"{_apiBaseUrl}", content);
                 response.EnsureSuccessStatusCode();
+            } catch (HttpRequestException ex) {
+                throw new Exception($"HTTP request failed for POST {_apiBaseUrl}: {ex.Message}", ex);
+            } catch (JsonException ex) {
+                throw new Exception($"Failed to serialize request for POST {_apiBaseUrl}: {ex.Message}", ex);
             } catch (Exception ex) {
                 throw new Exception($"Failed to add customer", ex);
             }
@@ -82,6 +93,10 @@ namespace assessment_platform_developer.Services {
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{customer.ID}", content);
                 response.EnsureSuccessStatusCode();
+            } catch (HttpRequestException ex) {
+                throw new Exception($"HTTP request failed for PUT {_apiBaseUrl}: {ex.Message}", ex);
+            } catch (JsonException ex) {
+                throw new Exception($"Failed to serialize request for PUT {_apiBaseUrl}: {ex.Message}", ex);
             } catch (Exception ex) {
                 throw new Exception($"Failed to update customer with ID {customer.ID}", ex);
             }
@@ -92,6 +107,8 @@ namespace assessment_platform_developer.Services {
             try {
                 var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/{id}");
                 response.EnsureSuccessStatusCode();
+            } catch (HttpRequestException ex) {
+                throw new Exception($"HTTP request failed for DELETE {_apiBaseUrl} by ID: {ex.Message}", ex);
             } catch (Exception ex) {
                 throw new Exception($"Failed to delete customer with ID {id}", ex);
             }
