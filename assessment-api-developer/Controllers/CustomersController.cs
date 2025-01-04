@@ -83,14 +83,16 @@ namespace assessment_platform_developer.Controllers {
         [Route("")]
         public async Task<IHttpActionResult> AddCustomer() {
             var rawBody = await Request.Content.ReadAsStringAsync();
-            rawBody.EnsureEndSeparator();
             try {
                 Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
                 if (customer == null) {
                     return BadRequest("customer data must be provided");
                 }
-                _customerService.AddCustomer(customer);
-                return Created($"api/customers/{customer.ID}", customer);
+                var result = _customerService.AddCustomer(customer);
+                if (!result.IsValid) {
+                    return BadRequest(result.ErrorMessage);
+                }
+                return Created("ok", result);
             } catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);
             } catch (Exception ex) {

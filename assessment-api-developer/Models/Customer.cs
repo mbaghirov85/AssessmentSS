@@ -1,7 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace assessment_platform_developer.Models {
+﻿namespace assessment_platform_developer.Models {
 
     public class Customer {
         public int ID { get; set; }
@@ -33,5 +30,9 @@ namespace assessment_platform_developer.Models {
         public string ContactTitle { get; set; }
 
         public string ContactNotes { get; set; }
+
+        public bool IsValid() {
+            return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Phone);
+        }
     }
 }
