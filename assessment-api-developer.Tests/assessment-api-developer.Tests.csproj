@@ -7,7 +7,7 @@
     <ProjectGuid>{C0028240-87DC-4B8E-8DFE-9294D31F07E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>assessment_platform_developer.Tests</RootNamespace>
+    <RootNamespace>AssessmentPlatformDeveloper.Tests</RootNamespace>
     <AssemblyName>assessment-platform-developer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

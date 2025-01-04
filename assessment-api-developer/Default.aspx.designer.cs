@@ -7,11 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AssessmentPlatformDeveloper
-{
+namespace AssessmentPlatformDeveloper {
 
 
-	public partial class _Default
-	{
-	}
+    public partial class Default {
+    }
 }

@@ -13,15 +13,6 @@ namespace AssessmentPlatformDeveloper {
     public partial class Customers {
 
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
         /// lblError control.
         /// </summary>
         /// <remarks>
@@ -92,6 +83,15 @@ namespace AssessmentPlatformDeveloper {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCustomerEmail;
+
+        /// <summary>
+        /// revCustomerEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCustomerEmail;
 
         /// <summary>
         /// txtCustomerEmail control.
@@ -182,6 +182,15 @@ namespace AssessmentPlatformDeveloper {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCustomerZip;
+
+        /// <summary>
+        /// revCustomerZip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCustomerZip;
 
         /// <summary>
         /// txtCustomerZip control.

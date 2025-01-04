@@ -1,20 +1,15 @@
 ﻿using SimpleInjector;
 using System;
-using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AssessmentPlatformDeveloper.Repositories;
-using SimpleInjector.Diagnostics;
-using System.Web.Compilation;
 using System.Web.UI;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using AssessmentPlatformDeveloper.Services;
 using AssessmentPlatformDeveloper.App_Start;
 using SimpleInjector.Integration.Web;
 using System.Web.Http;
-using System.Diagnostics;
 using SimpleInjector.Integration.WebApi;
 using AssessmentPlatformDeveloper.Controllers;
 using SimpleInjector.Lifestyles;
@@ -73,7 +68,7 @@ namespace AssessmentPlatformDeveloper {
             string apiBaseUrl = GetApiBaseUrl();
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
             container.Register<ICustomerService>(() => new CustomerService(new CustomerRepository()), Lifestyle.Singleton);
-            container.Register<IApiCustomerService>(() => new ApiCustomerService(apiBaseUrl), Lifestyle.Singleton);
+            container.Register<IRestfulCustomerService>(() => new RestfulCustomerService(apiBaseUrl), Lifestyle.Singleton);
             container.Register<CustomersController>(new AsyncScopedLifestyle());
 
             // 3. Verify the container's configuration.
