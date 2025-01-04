@@ -1,25 +1,24 @@
 ﻿using AssessmentPlatformDeveloper.Models;
+using AssessmentPlatformDeveloper.Services;
+using AssessmentPlatformDeveloper.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using AssessmentPlatformDeveloper.Services;
-using AssessmentPlatformDeveloper.Helpers;
-using Container = SimpleInjector.Container;
 using System.Web;
 
 namespace AssessmentPlatformDeveloper {
 
     public partial class Customers : Page {
 
-        private IApiCustomerService _apiCustomerService {
+        private IRestfulCustomerService _restfulCustomerService {
             get {
-                if (Session["ApiCustomerService"] == null) {
+                if (Session["RestfulCustomerService"] == null) {
                     var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
-                    Session["ApiCustomerService"] = container.GetInstance<IApiCustomerService>();
+                    Session["RestfulCustomerService"] = container.GetInstance<IRestfulCustomerService>();
                 }
-                return (IApiCustomerService)Session["ApiCustomerService"];
+                return (IRestfulCustomerService)Session["RestfulCustomerService"];
             }
         }
 
@@ -53,10 +52,10 @@ namespace AssessmentPlatformDeveloper {
         protected async void Page_Load(object sender, EventArgs e) {
             if (!IsPostBack) {
                 try {
-                    var customers = await _apiCustomerService.GetAllCustomers();
+                    var customers = await _restfulCustomerService.GetAllCustomers();
                     PopulateDdlCustomers(customers);
                 } catch (Exception ex) {
-                    lblError.Text = $"Error while loading page: {ex}";
+                    ShowMessage("error", $"Error while loading page: {ex}");
                 }
 
                 InitLists();
@@ -119,7 +118,6 @@ namespace AssessmentPlatformDeveloper {
             ddlCustomers.Items.Add(new ListItem("Add new customer", "0"));
 
             foreach (var customer in customers) {
-                System.Diagnostics.Debug.WriteLine($"Customer from Customers.aspx.DdlCustomers {customer.ID} with the name {customer.Name}");
                 ddlCustomers.Items.Add(new ListItem(customer.Name, customer.ID.ToString()));
             }
 
@@ -130,6 +128,16 @@ namespace AssessmentPlatformDeveloper {
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e) {
+            if (!EmailValidator.IsValidEmail(txtCustomerEmail.Text)) {
+                ShowMessage("error", "Invalid customer email format.");
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !EmailValidator.IsValidEmail(txtCustomerEmail.Text)) {
+                ShowMessage("error", "Invalid contact email format.");
+                return;
+            }
+
             var customer = new Customer {
                 Name = txtCustomerName.Text,
                 Address = txtCustomerAddress.Text,
@@ -151,40 +159,40 @@ namespace AssessmentPlatformDeveloper {
             try {
                 System.Diagnostics.Debug.WriteLine($"btnAdd=>{Session["customerID"]}");
                 if ((int)Session["customerID"] != 0) {
+                    action = "updat";
                     System.Diagnostics.Debug.WriteLine($"btnAdd=>Updating");
                     customer.ID = (int)Session["customerID"];
-                    await _apiCustomerService.UpdateCustomer(customer);
+                    await _restfulCustomerService.UpdateCustomer(customer);
                 } else {
-                    action = "updat";
                     System.Diagnostics.Debug.WriteLine($"btnAdd=>Adding");
-                    await _apiCustomerService.AddCustomer(customer);
+                    await _restfulCustomerService.AddCustomer(customer);
                 }
 
                 // Refresh dropdown and clear form fields
-                PopulateDdlCustomers(await _apiCustomerService.GetAllCustomers());
+                PopulateDdlCustomers(await _restfulCustomerService.GetAllCustomers());
                 ClearFormFields();
 
-                lblError.Text = $"Customer {customer.Name} {action}ed successfully! ";
+                ShowMessage("info", $"Customer {customer.Name} {action}ed successfully! ");
             } catch (Exception ex) {
-                lblError.Text = $"Error {action}ing customer: {ex.Message}";
+                ShowMessage("error", $"Error {action}ing customer: {ex.Message}");
             }
         }
 
         protected async void btnDelete_Click(object sender, EventArgs e) {
             try {
                 if ((int)Session["customerID"] != 0) {
-                    await _apiCustomerService.DeleteCustomer((int)Session["customerID"]);
+                    await _restfulCustomerService.DeleteCustomer((int)Session["customerID"]);
                 } else {
-                    lblError.Text = "Please select a proper customer";
+                    ShowMessage("error", "Please select a proper customer");
                 }
 
                 // Refresh dropdown and clear form fields
-                PopulateDdlCustomers(await _apiCustomerService.GetAllCustomers());
+                PopulateDdlCustomers(await _restfulCustomerService.GetAllCustomers());
                 Session["customerID"] = 0;
                 ClearFormFields();
-                lblError.Text = "Customer deleted successfully!";
+                ShowMessage("info", "Customer deleted successfully!");
             } catch (Exception ex) {
-                lblError.Text = $"Error deleting customer ${(int)Session["customerID"]}: {ex.Message}";
+                ShowMessage("error", $"Error deleting customer ${(int)Session["customerID"]}: {ex.Message}");
             }
         }
 
@@ -197,7 +205,7 @@ namespace AssessmentPlatformDeveloper {
                     btnDelete.Visible = true;
                     try {
                         // Get customer details
-                        var customer = await _apiCustomerService.GetCustomer((int)Session["customerID"]);
+                        var customer = await _restfulCustomerService.GetCustomer((int)Session["customerID"]);
 
                         // Populate form fields with retrieved customer data
                         txtCustomerName.Text = customer.Name;
@@ -218,10 +226,10 @@ namespace AssessmentPlatformDeveloper {
                         btnAdd.Text = "Update";
                         lblError.Text = "";
                     } catch (Exception ex) {
-                        lblError.Text = $"Error fetching customer details: {ex.Message}";
+                        ShowMessage("error", $"Error fetching customer details: {ex.Message}");
                     }
                 } else {
-                    lblError.Text = "Please select a valid customer";
+                    ShowMessage("error", "Please select a valid customer");
                 }
             } else {
                 // Clear form fields if "Add new customer" is selected
@@ -232,12 +240,22 @@ namespace AssessmentPlatformDeveloper {
         protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 PopulateDdlState("0");
+                revCustomerZip.ValidationExpression = PostalCodeValidator.GetValidationExpression(ddlCountry.SelectedItem.Text);
                 txtCustomerZip.Text = "";
                 txtCustomerCity.Text = "";
                 lblError.Text = "";
             } catch (Exception ex) {
-                lblError.Text = $"Error populating states/provinces: {ex.Message}";
+                ShowMessage("error", $"Error populating states/provinces: {ex.Message}");
             }
+        }
+
+        public void ShowMessage(string action, string message) {
+            if (action == "error") {
+                lblError.ForeColor = System.Drawing.Color.Red;
+            } else {
+                lblError.ForeColor = System.Drawing.Color.Green;
+            }
+            lblError.Text = message;
         }
 
         public void ClearFormFields() {

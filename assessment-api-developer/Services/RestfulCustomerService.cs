@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 
 namespace AssessmentPlatformDeveloper.Services {
 
-    public interface IApiCustomerService {
+    public interface IRestfulCustomerService {
 
         Task<List<Customer>> GetAllCustomers();
 
@@ -23,11 +23,11 @@ namespace AssessmentPlatformDeveloper.Services {
         Task DeleteCustomer(int id);
     }
 
-    public class ApiCustomerService : IApiCustomerService {
+    public class RestfulCustomerService : IRestfulCustomerService {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
 
-        public ApiCustomerService(string apiBaseUrl) {
+        public RestfulCustomerService(string apiBaseUrl) {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
