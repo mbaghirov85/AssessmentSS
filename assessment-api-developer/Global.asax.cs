@@ -64,7 +64,6 @@ namespace assessment_platform_developer {
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             // 2. Configure the container (register)
-            string apiBaseUrl = GetApiBaseUrl();
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
             container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
             container.Register<IRestfulCustomerService, RestfulCustomerService>(Lifestyle.Scoped);
@@ -77,20 +76,6 @@ namespace assessment_platform_developer {
             new SimpleInjectorWebApiDependencyResolver(container);
 
             HttpContext.Current.Application["DIContainer"] = container;
-        }
-
-        private static string GetApiBaseUrl() {
-            /*
-            var scheme = HttpContext.Current.Request.Url.Scheme; // "http" or "https"
-            var authority = HttpContext.Current.Request.Url.Authority; // "localhost:1234" or "www.example.com"
-            var appPath = HttpContext.Current.Request.ApplicationPath.TrimEnd('/'); // "/MyApp" or ""
-
-            // Retrieve API path from configuration
-            var apiPath = System.Configuration.ConfigurationManager.AppSettings["ApiPath"] ?? "/api/customers";
-
-            return $"{scheme}://{authority}{appPath}{apiPath}";
-            */
-            return "https://localhost:44358/api/customers";
         }
     }
 }
