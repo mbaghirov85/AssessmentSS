@@ -74,12 +74,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Customer'
       responses:
-        '200':
-          description: Customer updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
+        '204':
+          description: NoContent on successfull execution
         '400':
           description: Bad request
         '404':

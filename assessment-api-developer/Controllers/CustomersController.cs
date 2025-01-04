@@ -127,7 +127,7 @@ namespace assessment_platform_developer.Controllers {
                 }
 
                 _customerService.UpdateCustomer(customer);
-                return Ok(customer);
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);
             } catch (Exception ex) {
