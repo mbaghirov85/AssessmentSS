@@ -13,7 +13,7 @@ namespace assessment_platform_developer.Services {
 
         Customer GetCustomer(int id);
 
-        void AddCustomer(Customer customer);
+        ValidationResult AddCustomer(Customer customer);
 
         void UpdateCustomer(Customer customer);
 
@@ -22,9 +22,11 @@ namespace assessment_platform_developer.Services {
 
     public class CustomerService : ICustomerService {
         private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerValidationService _validator;
 
-        public CustomerService(ICustomerRepository customerRepository) {
+        public CustomerService(ICustomerRepository customerRepository, ICustomerValidationService validator) {
             this._customerRepository = customerRepository;
+            this._validator = validator;
         }
 
         public IEnumerable<Customer> GetAllCustomers() {
@@ -32,39 +34,33 @@ namespace assessment_platform_developer.Services {
         }
 
         public Customer GetCustomer(int id) {
-            // ensure that customer exists
             var customer = _customerRepository.Get(id);
-            if (customer == null) {
-                throw new ArgumentException($"Customer with ID {id} does not exist.");
-            }
             return customer;
         }
 
-        public void AddCustomer(Customer customer) {
+        public ValidationResult AddCustomer(Customer customer) {
             // checking if customer data was submitted properly
-            if (customer == null) {
-                throw new ArgumentNullException(nameof(customer), "Customer cannot be null.");
+            var validationResult = _validator.ValidateCustomer(customer);
+            if (!validationResult.IsValid) {
+                return ValidationResult.Failure(validationResult.ErrorMessage);
             }
-            _customerRepository.Add(customer);
+            try {
+                _customerRepository.Add(customer);
+                return ValidationResult.Success;
+            } catch (Exception ex) {
+                return ValidationResult.Failure($"Filed to add customer: {ex.Message}");
+            }
         }
 
         public void UpdateCustomer(Customer customer) {
             // ensure that customer exists
-            var existingCustomer = _customerRepository.Get(customer.ID);
-            if (existingCustomer == null) {
-                throw new ArgumentException($"Cannot update. Customer with ID {customer.ID} does not exist.");
-            }
-
+            var existingCustomer = _customerRepository.Get(customer.ID) ?? throw new ArgumentException($"Cannot update. Customer with ID {customer.ID} does not exist.");
             _customerRepository.Update(customer);
         }
 
         public void DeleteCustomer(int id) {
             // ensure that cusotmer exists
-            var existingCustomer = _customerRepository.Get(id);
-            if (existingCustomer == null) {
-                throw new ArgumentException($"Cannot delete. Customer with ID {id} does not exist.");
-            }
-
+            var existingCustomer = _customerRepository.Get(id) ?? throw new ArgumentException($"Cannot delete. Customer with ID {id} does not exist.");
             _customerRepository.Delete(id);
         }
     }

@@ -71,6 +71,7 @@ namespace assessment_platform_developer {
             container.RegisterInstance<HttpClient>(httpClient);
 
             // Configure the container (register)
+            container.Register<ICustomerValidationService, CustomerValidationService>(Lifestyle.Singleton);
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
             container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
             container.Register<IRestfulCustomerService, RestfulCustomerService>(Lifestyle.Scoped);
