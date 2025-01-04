@@ -149,8 +149,8 @@ namespace assessment_platform_developer {
                 Country = ddlCountry.SelectedValue,
                 Notes = txtCustomerNotes.Text,
                 ContactName = txtContactName.Text,
-                ContactPhone = txtCustomerPhone.Text,
-                ContactEmail = txtCustomerEmail.Text,
+                ContactPhone = txtContactPhone.Text,
+                ContactEmail = txtContactEmail.Text,
                 ContactTitle = txtContactTitle.Text,
                 ContactNotes = txtContactNotes.Text
             };
