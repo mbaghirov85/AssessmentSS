@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Web;
 using System.Web.Routing;
-using System.Web.Services.Protocols;
 using Microsoft.AspNet.FriendlyUrls;
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
     public static class RouteConfig {
 

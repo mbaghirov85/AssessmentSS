@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
 
     public partial class Customers {

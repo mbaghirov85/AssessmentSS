@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace AssessmentPlatformDeveloper.Helpers {
+namespace assessment_platform_developer.Helpers {
 
     public static class EnumExtensions {
 

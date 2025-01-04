@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Customers.aspx.cs" Inherits="AssessmentPlatformDeveloper.Customers" %>
+﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Customers.aspx.cs" Inherits="assessment_platform_developer.Customers" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 	<div>
@@ -30,7 +30,7 @@
 							</div>
 							<div class="form-group">
 								<asp:Label ID="lblCustomerPhone" runat="server" Text="Phone" CssClass="form-label"></asp:Label>
-								<asp:TextBox ID="txtCustomerPhone" runat="server" CssClass="form-control"></asp:TextBox>
+								<asp:TextBox ID="txtCustomerPhone" runat="server" CssClass="form-control" required="true"></asp:TextBox>
 							</div>
 							<div class="form-group">
 								<asp:Label ID="lblCustomerCountry" runat="server" Text="Country" CssClass="form-label"></asp:Label>

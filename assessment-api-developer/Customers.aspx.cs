@@ -1,6 +1,6 @@
-﻿using AssessmentPlatformDeveloper.Models;
-using AssessmentPlatformDeveloper.Services;
-using AssessmentPlatformDeveloper.Helpers;
+﻿using assessment_platform_developer.Models;
+using assessment_platform_developer.Services;
+using assessment_platform_developer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web;
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
     public partial class Customers : Page {
 
@@ -133,7 +133,7 @@ namespace AssessmentPlatformDeveloper {
                 return;
             }
 
-            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !EmailValidator.IsValidEmail(txtCustomerEmail.Text)) {
+            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !EmailValidator.IsValidEmail(txtContactEmail.Text)) {
                 ShowMessage("error", "Invalid contact email format.");
                 return;
             }
@@ -157,14 +157,11 @@ namespace AssessmentPlatformDeveloper {
 
             String action = "add";
             try {
-                System.Diagnostics.Debug.WriteLine($"btnAdd=>{Session["customerID"]}");
                 if ((int)Session["customerID"] != 0) {
                     action = "updat";
-                    System.Diagnostics.Debug.WriteLine($"btnAdd=>Updating");
                     customer.ID = (int)Session["customerID"];
                     await _restfulCustomerService.UpdateCustomer(customer);
                 } else {
-                    System.Diagnostics.Debug.WriteLine($"btnAdd=>Adding");
                     await _restfulCustomerService.AddCustomer(customer);
                 }
 

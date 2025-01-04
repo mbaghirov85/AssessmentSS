@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="AssessmentPlatformDeveloper.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="assessment_platform_developer.Global" Language="C#" %>

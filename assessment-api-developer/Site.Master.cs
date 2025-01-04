@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
     public partial class SiteMaster : MasterPage {
 

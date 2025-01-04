@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
-using AssessmentPlatformDeveloper.Models;
+using assessment_platform_developer.Models;
 using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 
-namespace AssessmentPlatformDeveloper.Services {
+namespace assessment_platform_developer.Services {
 
     public interface IRestfulCustomerService {
 
@@ -27,11 +27,25 @@ namespace AssessmentPlatformDeveloper.Services {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
 
-        public RestfulCustomerService(string apiBaseUrl) {
+        public RestfulCustomerService() {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
-            _apiBaseUrl = apiBaseUrl;
+            _apiBaseUrl = GetApiBaseUrl();
+        }
+
+        private static string GetApiBaseUrl() {
+            /*
+            var scheme = HttpContext.Current.Request.Url.Scheme; // "http" or "https"
+            var authority = HttpContext.Current.Request.Url.Authority; // "localhost:1234" or "www.example.com"
+            var appPath = HttpContext.Current.Request.ApplicationPath.TrimEnd('/'); // "/MyApp" or ""
+
+            // Retrieve API path from configuration
+            var apiPath = System.Configuration.ConfigurationManager.AppSettings["ApiPath"] ?? "/api/customers";
+
+            return $"{scheme}://{authority}{appPath}{apiPath}";
+            */
+            return "https://localhost:44358/api/customers";
         }
 
         // GET: Get all customers
@@ -74,11 +88,8 @@ namespace AssessmentPlatformDeveloper.Services {
         public async Task UpdateCustomer(Customer customer) {
             try {
                 var jsonContent = JsonConvert.SerializeObject(customer);
-                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>{jsonContent}");
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>StringContent created");
                 var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{customer.ID}", content);
-                System.Diagnostics.Debug.WriteLine($"ApiService.UpdateCustomer=>PUT method executed");
                 response.EnsureSuccessStatusCode();
             } catch (Exception ex) {
                 throw new Exception($"Failed to update customer with ID {customer.ID}", ex);

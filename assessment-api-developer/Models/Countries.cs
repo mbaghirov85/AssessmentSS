@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AssessmentPlatformDeveloper.Models {
+namespace assessment_platform_developer.Models {
 
     public enum Countries {
         [Description("Select country")] SelectCountry,
