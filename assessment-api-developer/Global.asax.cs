@@ -3,18 +3,17 @@ using System;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
-using AssessmentPlatformDeveloper.Repositories;
+using assessment_platform_developer.Repositories;
 using System.Web.UI;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using AssessmentPlatformDeveloper.Services;
-using AssessmentPlatformDeveloper.App_Start;
+using assessment_platform_developer.Services;
 using SimpleInjector.Integration.Web;
 using System.Web.Http;
 using SimpleInjector.Integration.WebApi;
-using AssessmentPlatformDeveloper.Controllers;
+using assessment_platform_developer.Controllers;
 using SimpleInjector.Lifestyles;
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
     public sealed class PageInitializerModule : IHttpModule {
 
@@ -67,8 +66,8 @@ namespace AssessmentPlatformDeveloper {
             // 2. Configure the container (register)
             string apiBaseUrl = GetApiBaseUrl();
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
-            container.Register<ICustomerService>(() => new CustomerService(new CustomerRepository()), Lifestyle.Singleton);
-            container.Register<IRestfulCustomerService>(() => new RestfulCustomerService(apiBaseUrl), Lifestyle.Singleton);
+            container.Register<ICustomerService, CustomerService>(Lifestyle.Scoped);
+            container.Register<IRestfulCustomerService, RestfulCustomerService>(Lifestyle.Scoped);
             container.Register<CustomersController>(new AsyncScopedLifestyle());
 
             // 3. Verify the container's configuration.

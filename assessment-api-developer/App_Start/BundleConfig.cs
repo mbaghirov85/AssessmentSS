@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Optimization;
-using System.Web.UI;
+﻿using System.Web.Optimization;
 
-namespace AssessmentPlatformDeveloper
-{
-    public class BundleConfig
-    {
+namespace assessment_platform_developer {
+
+    public class BundleConfig {
+
         // For more information on Bundling, visit https://go.microsoft.com/fwlink/?LinkID=303951
-        public static void RegisterBundles(BundleCollection bundles)
-        {
+        public static void RegisterBundles(BundleCollection bundles) {
             bundles.Add(
                 new ScriptBundle("~/bundles/WebFormsJs").Include(
                     "~/Scripts/WebForms/WebForms.js",

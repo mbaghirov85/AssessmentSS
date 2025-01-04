@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using AssessmentPlatformDeveloper.Models;
+using assessment_platform_developer.Models;
 
-namespace AssessmentPlatformDeveloper.Helpers {
+namespace assessment_platform_developer.Helpers {
 
     public class PostalCodeValidator {
 

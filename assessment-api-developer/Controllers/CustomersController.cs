@@ -1,14 +1,12 @@
-﻿using AssessmentPlatformDeveloper.Services;
-using AssessmentPlatformDeveloper.Models;
-using System.Collections.Generic;
+﻿using assessment_platform_developer.Services;
+using assessment_platform_developer.Models;
 using System.Web.Http;
 using System;
-using AssessmentPlatformDeveloper.Repositories;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System.Net.Http;
+using WebGrease.Extensions;
 
-namespace AssessmentPlatformDeveloper.Controllers {
+namespace assessment_platform_developer.Controllers {
 
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController {
@@ -55,8 +53,9 @@ namespace AssessmentPlatformDeveloper.Controllers {
 
         [HttpPost]
         [Route("")]
-        public IHttpActionResult AddCustomer() {
-            var rawBody = Request.Content.ReadAsStringAsync().Result;
+        public async Task<IHttpActionResult> AddCustomer() {
+            var rawBody = await Request.Content.ReadAsStringAsync();
+            rawBody.EnsureEndSeparator();
             try {
                 Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
                 if (customer == null) {
@@ -73,9 +72,9 @@ namespace AssessmentPlatformDeveloper.Controllers {
 
         [HttpPut]
         [Route("{ID:int}")]
-        public IHttpActionResult UpdateCustomer(int ID) {
-            var rawBody = Request.Content.ReadAsStringAsync().Result;
-            System.Diagnostics.Debug.WriteLine($"Controller.UpdateCustomer==>{rawBody}");
+        public async Task<IHttpActionResult> UpdateCustomer(int ID) {
+            var rawBody = await Request.Content.ReadAsStringAsync();
+            rawBody.EnsureEndSeparator();
             try {
                 Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
                 if (customer == null) {
@@ -83,7 +82,7 @@ namespace AssessmentPlatformDeveloper.Controllers {
                 }
 
                 if (ID != customer.ID) {
-                    return BadRequest("Customer IDs does not match");
+                    return BadRequest("Customer IDs provided in the URL and Body does not match");
                 }
 
                 var existingCustomer = _customerService.GetCustomer(customer.ID);

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace AssessmentPlatformDeveloper {
+namespace assessment_platform_developer {
 
     public partial class Default : Page {
 

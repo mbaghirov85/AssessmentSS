@@ -1,9 +1,9 @@
-﻿using AssessmentPlatformDeveloper.Models;
-using Newtonsoft.Json;
+﻿using assessment_platform_developer.Models;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 
-namespace AssessmentPlatformDeveloper.Repositories {
+namespace assessment_platform_developer.Repositories {
 
     public interface ICustomerRepository {
 
@@ -33,7 +33,7 @@ namespace AssessmentPlatformDeveloper.Repositories {
 
         public void Add(Customer customer) {
             if (customer.ID == 0) {
-                customer.ID = customers.Any() ? customers.Max(c => c.ID) + 1 : 1;
+                customer.ID = customers.Any() ? customers.Maxima(c => c.ID).First().ID + 1 : 1;
             }
             customers.Add(customer);
         }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace AssessmentPlatformDeveloper.App_Start {
+namespace assessment_platform_developer {
 
     public class WebApiConfig {
 
