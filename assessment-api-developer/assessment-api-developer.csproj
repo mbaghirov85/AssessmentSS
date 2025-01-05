@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Helpers\EmailValidator.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
+    <Compile Include="Helpers\HttpBodyHelper.cs" />
     <Compile Include="Helpers\PostalCodeValidator.cs" />
     <Compile Include="Common\ValidationResult.cs" />
     <Compile Include="Models\USStates.cs" />

@@ -109,16 +109,6 @@ namespace assessment_platform_developer {
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e) {
-            if (!_emailValidator.IsValidEmail(txtCustomerEmail.Text)) {
-                ShowMessage("error", "Invalid customer email format.");
-                return;
-            }
-
-            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !_emailValidator.IsValidEmail(txtContactEmail.Text)) {
-                ShowMessage("error", "Invalid contact email format.");
-                return;
-            }
-
             var customer = new Customer {
                 Name = txtCustomerName.Text,
                 Address = txtCustomerAddress.Text,
@@ -148,7 +138,6 @@ namespace assessment_platform_developer {
 
                 // Refresh dropdown and clear form fields
                 PopulateDdlCustomers(await RestfulService.GetAllCustomers());
-                ClearFormFields();
 
                 ShowMessage("info", $"Customer {customer.Name} {action}ed successfully! ");
             } catch (Exception ex) {

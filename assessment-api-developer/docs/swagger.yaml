@@ -1,14 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Customers API
+  title: Customer Management API
+  description: API for managing customer information
   version: 1.0.0
-  description: API for managing customer data
+
 paths:
   /api/customers:
     get:
-      summary: Get all customers
-      tags: ['Customers']
-      operationId: GetAllCustomers
+      summary: Retrieve all customers
       responses:
         '200':
           description: Successful response
@@ -20,8 +19,6 @@ paths:
                   $ref: '#/components/schemas/Customer'
     post:
       summary: Add a new customer
-      tags: ['Customers']
-      operationId: AddCustomer
       requestBody:
         required: true
         content:
@@ -31,19 +28,14 @@ paths:
       responses:
         '201':
           description: Customer created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
         '400':
           description: Bad request
-  /api/customers/{id}:
+
+  /api/customers/{ID}:
     get:
-      summary: Get a customer by ID
-      tags: ['Customers']
-      operationId: GetCustomer
+      summary: Retrieve a specific customer
       parameters:
-        - name: id
+        - name: ID
           in: path
           required: true
           schema:
@@ -59,10 +51,8 @@ paths:
           description: Customer not found
     put:
       summary: Update an existing customer
-      tags: ['Customers']
-      operationId: UpdateCustomer
       parameters:
-        - name: id
+        - name: ID
           in: path
           required: true
           schema:
@@ -75,17 +65,15 @@ paths:
               $ref: '#/components/schemas/Customer'
       responses:
         '204':
-          description: NoContent on successfull execution
+          description: Customer updated successfully
         '400':
           description: Bad request
         '404':
           description: Customer not found
     delete:
       summary: Delete a customer
-      tags: ['Customers']
-      operationId: DeleteCustomer
       parameters:
-        - name: id
+        - name: ID
           in: path
           required: true
           schema:
@@ -95,38 +83,43 @@ paths:
           description: Customer deleted successfully
         '404':
           description: Customer not found
+
 components:
   schemas:
     Customer:
       type: object
       properties:
-        id:
+        ID:
           type: integer
-        name:
+        Name:
           type: string
-        address:
+        Address:
           type: string
-        email:
+        Email:
           type: string
-        phone:
+        Phone:
           type: string
-        city:
+        City:
           type: string
-        state:
+        State:
           type: string
-        zip:
+        Zip:
           type: string
-        country:
+        Country:
           type: string
-        notes:
+        Notes:
           type: string
-        contactName:
+        ContactName:
           type: string
-        contactPhone:
+        ContactPhone:
           type: string
-        contactEmail:
+        ContactEmail:
           type: string
-        contactTitle:
+        ContactTitle:
           type: string
-        contactNotes:
+        ContactNotes:
           type: string
+      required:
+        - Name
+        - Email
+        - Phone
