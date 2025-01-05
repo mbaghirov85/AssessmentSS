@@ -30,9 +30,5 @@
         public string ContactTitle { get; set; }
 
         public string ContactNotes { get; set; }
-
-        public bool IsValid() {
-            return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Phone);
-        }
     }
 }
