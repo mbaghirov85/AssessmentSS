@@ -80,6 +80,9 @@ namespace assessment_platform_developer.Services {
             if (!string.IsNullOrEmpty(customer.Zip) && !_postalCodeValidator.Validate(customer.Country, customer.Zip))
                 return ValidationResult.Failure("Invalid postal code");
 
+            if (_repository.IsPhoneOrEmailTaken(customer.ID, customer.Phone, customer.Email))
+                return ValidationResult.Failure("Phone number or email already exists in the database");
+
             return ValidationResult.Success;
         }
 

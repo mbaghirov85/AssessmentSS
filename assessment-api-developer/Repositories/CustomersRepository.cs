@@ -16,6 +16,8 @@ namespace assessment_platform_developer.Repositories {
         void Update(Customer customer);
 
         void Delete(int id);
+
+        bool IsPhoneOrEmailTaken(int ID, string phone, string email);
     }
 
     public class CustomerRepository : ICustomerRepository {
@@ -63,6 +65,10 @@ namespace assessment_platform_developer.Repositories {
             if (customer != null) {
                 customers.Remove(customer);
             }
+        }
+
+        public bool IsPhoneOrEmailTaken(int ID, string phone, string email) {
+            return customers.Any(c => (ID == 0 || c.ID != ID) && (c.Phone == phone || c.Email == email));
         }
     }
 }
