@@ -14,90 +14,69 @@ namespace assessment_platform_developer {
         private readonly IEmailValidator _emailValidator = new EmailValidator();
         private readonly IPostalCodeValidator _postalCodeValidator = new PostalCodeValidator();
 
-        private IRestfulCustomerService _restfulCustomerService {
+        private IRestfulCustomerService RestfulService {
             get {
-                if (Session["RestfulCustomerService"] == null) {
-                    var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
-                    Session["RestfulCustomerService"] = container.GetInstance<IRestfulCustomerService>();
-                }
-                return (IRestfulCustomerService)Session["RestfulCustomerService"];
+                var container = HttpContext.Current.Application["DIContainer"] as SimpleInjector.Container;
+                return container.GetInstance<IRestfulCustomerService>();
             }
         }
 
-        private List<ListItem> countries {
+        private List<ListItem> CountriesList {
             get {
-                return Session["Countries"] as List<ListItem>;
-            }
-            set {
-                Session["Countries"] = value;
-            }
-        }
-
-        private List<ListItem> provinces {
-            get {
-                return Session["Provinces"] as List<ListItem>;
-            }
-            set {
-                Session["Provinces"] = value;
-            }
-        }
-
-        private List<ListItem> states {
-            get {
-                return Session["States"] as List<ListItem>;
-            }
-            set {
-                Session["States"] = value;
-            }
-        }
-
-        protected async void Page_Load(object sender, EventArgs e) {
-            if (!IsPostBack) {
-                try {
-                    var customers = await _restfulCustomerService.GetAllCustomers();
-                    PopulateDdlCustomers(customers);
-                } catch (Exception ex) {
-                    ShowMessage("error", $"Error while loading page: {ex}");
-                }
-
-                InitLists();
-                PopulateDdlCountry();
-                Session["customerID"] = 0;
-            }
-        }
-
-        private void InitLists() {
-            countries = Enum.GetValues(typeof(Countries))
+                return Enum.GetValues(typeof(Countries))
                 .Cast<Countries>()
                 .Select(item => new ListItem {
                     Text = EnumExtensions.GetEnumDescription(item),
                     Value = ((int)item).ToString()
                 })
                 .ToList();
-            Session["Countries"] = countries;
+            }
+            set { }
+        }
 
-            provinces = Enum.GetValues(typeof(CanadianProvinces))
+        private List<ListItem> ProvincesList {
+            get {
+                return Enum.GetValues(typeof(CanadianProvinces))
                 .Cast<CanadianProvinces>()
                 .Select(item => new ListItem {
                     Text = EnumExtensions.GetEnumDescription(item),
                     Value = ((int)item).ToString()
                 })
                 .ToList();
-            Session["Provinces"] = provinces;
+            }
+            set { }
+        }
 
-            states = Enum.GetValues(typeof(USStates))
-                .Cast<USStates>()
-                .Select(item => new ListItem {
-                    Text = EnumExtensions.GetEnumDescription(item),
-                    Value = ((int)item).ToString()
-                })
-                .ToList();
-            Session["States"] = states;
+        private List<ListItem> StatesList {
+            get {
+                return Enum.GetValues(typeof(USStates))
+                        .Cast<USStates>()
+                        .Select(item => new ListItem {
+                            Text = EnumExtensions.GetEnumDescription(item),
+                            Value = ((int)item).ToString()
+                        }).ToList();
+            }
+            set { }
+        }
+
+        protected async void Page_Load(object sender, EventArgs e) {
+            if (!IsPostBack) {
+                try {
+                    var customers = await RestfulService.GetAllCustomers();
+                    PopulateDdlCustomers(customers);
+                } catch (Exception ex) {
+                    ShowMessage("error", $"Error while loading page: {ex}");
+                }
+
+                //InitLists();
+                PopulateDdlCountry();
+                Session["customerID"] = 0;
+            }
         }
 
         private void PopulateDdlCountry() {
             ddlCountry.Items.Clear();
-            ddlCountry.Items.AddRange(countries.ToArray());
+            ddlCountry.Items.AddRange(CountriesList.ToArray());
             ddlCountry.SelectedIndex = 0;
         }
 
@@ -106,10 +85,10 @@ namespace assessment_platform_developer {
             string selectedCountry = ddlCountry.SelectedValue;
             // Populate ddlState based on selected country
             if (selectedCountry == ((int)Countries.Canada).ToString()) { // Canada
-                ddlState.Items.AddRange(provinces.ToArray());
+                ddlState.Items.AddRange(ProvincesList.ToArray());
                 lblCustomerState.Text = "Province";
             } else if (selectedCountry == ((int)Countries.UnitedStates).ToString()) { // United States
-                ddlState.Items.AddRange(states.ToArray());
+                ddlState.Items.AddRange(StatesList.ToArray());
                 lblCustomerState.Text = "State";
             }
             ddlState.SelectedValue = selectedValue;
@@ -162,13 +141,13 @@ namespace assessment_platform_developer {
                 if ((int)Session["customerID"] != 0) {
                     action = "updat";
                     customer.ID = (int)Session["customerID"];
-                    await _restfulCustomerService.UpdateCustomer(customer);
+                    await RestfulService.UpdateCustomer(customer);
                 } else {
-                    await _restfulCustomerService.AddCustomer(customer);
+                    await RestfulService.AddCustomer(customer);
                 }
 
                 // Refresh dropdown and clear form fields
-                PopulateDdlCustomers(await _restfulCustomerService.GetAllCustomers());
+                PopulateDdlCustomers(await RestfulService.GetAllCustomers());
                 ClearFormFields();
 
                 ShowMessage("info", $"Customer {customer.Name} {action}ed successfully! ");
@@ -180,13 +159,13 @@ namespace assessment_platform_developer {
         protected async void btnDelete_Click(object sender, EventArgs e) {
             try {
                 if ((int)Session["customerID"] != 0) {
-                    await _restfulCustomerService.DeleteCustomer((int)Session["customerID"]);
+                    await RestfulService.DeleteCustomer((int)Session["customerID"]);
                 } else {
                     ShowMessage("error", "Please select a proper customer");
                 }
 
                 // Refresh dropdown and clear form fields
-                PopulateDdlCustomers(await _restfulCustomerService.GetAllCustomers());
+                PopulateDdlCustomers(await RestfulService.GetAllCustomers());
                 Session["customerID"] = 0;
                 ClearFormFields();
                 ShowMessage("info", "Customer deleted successfully!");
@@ -204,7 +183,7 @@ namespace assessment_platform_developer {
                     btnDelete.Visible = true;
                     try {
                         // Get customer details
-                        var customer = await _restfulCustomerService.GetCustomer((int)Session["customerID"]);
+                        var customer = await RestfulService.GetCustomer((int)Session["customerID"]);
 
                         // Populate form fields with retrieved customer data
                         txtCustomerName.Text = customer.Name;
