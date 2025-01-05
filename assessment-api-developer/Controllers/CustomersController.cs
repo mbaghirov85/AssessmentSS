@@ -64,12 +64,18 @@ namespace assessment_platform_developer.Controllers {
         [Route("{ID:int}")]
         public IHttpActionResult DeleteCustomer(int ID) {
             try {
-                var existingCustomer = _customerGetService.GetCustomer(ID);
-                if (existingCustomer == null) {
-                    return NotFound();
+                ValidationResult validationResult = _validator.ValidateHttpDelete(ID);
+                if (!validationResult.IsValid) {
+                    return BadRequest(validationResult.ErrorMessage);
                 }
 
-                _customerManageService.DeleteCustomer(ID);
+                var result = _customerManageService.DeleteCustomer(ID);
+                if (!result.IsValid) {
+                    if (result.ErrorMessage == "Not found") {
+                        return NotFound();
+                    }
+                    return BadRequest(result.ErrorMessage);
+                }
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (Exception ex) {
                 return InternalServerError(ex);
