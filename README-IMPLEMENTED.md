@@ -2,6 +2,8 @@
 
 ## Notes
 
+* in general majority of my time was spent on realization of "how to do it within the C# project". In case there is a working application which can be referenced to - it will simplify the process and speedup the timeline dramatically
+* not sure if my implementation is correct. As I understood this assessment generates the dll library. I've implemented internal methods to setup the local restful interface and startup the site on run.
 * refactored the form item names to keep the type of the objects in front of the IDs (camelCase).
 * faced with the GitKraken bug when it removes the current branch and modified files if some of the files are blocked and you are switching to another branch.
 
