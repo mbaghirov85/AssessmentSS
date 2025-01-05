@@ -12,6 +12,19 @@
 
 ![Site map](assessment-api-developer/docs/SiteMap.png)
 
+## How to start
+
+1. Open the project in VStudio
+2. Click on the solution with the mouse right button
+3. Open "Properties"
+4. In the opened window
+* select the "Configure Startup Projects" from the right pane
+* ensure that assessment-api-developer is selected in the "Single startup project"
+* press OK
+5. Execute the project
+* web browser must start with the default page.
+* RESTful api is ready to use on the: https://localhost:44358/api/customers
+
 ## Applied Changes
 
 ### Models
