@@ -4,30 +4,30 @@ using System;
 
 namespace assessment_platform_developer.Services {
 
-    public interface ICustomerServiceManage {
+    public interface ICustomerManageService {
 
         ValidationResult AddCustomer(Customer customer);
 
-        void UpdateCustomer(Customer customer);
+        ValidationResult UpdateCustomer(Customer customer);
 
         void DeleteCustomer(int id);
     }
 
-    public class CustomerServiceManage : ICustomerServiceManage {
+    public class CustomerManageService : ICustomerManageService {
         private readonly ICustomerRepository _customerRepository;
         private readonly ICustomerValidationService _validator;
 
-        public CustomerServiceManage(ICustomerRepository customerRepository, ICustomerValidationService validator) {
+        public CustomerManageService(ICustomerRepository customerRepository, ICustomerValidationService validator) {
             this._customerRepository = customerRepository;
             this._validator = validator;
         }
 
         public ValidationResult AddCustomer(Customer customer) {
             // checking if customer data was submitted properly
-            var validationResult = _validator.ValidateCustomer(customer);
-            if (!validationResult.IsValid) {
+            var validationResult = _validator.ValidateAdd(customer);
+            if (!validationResult.IsValid)
                 return ValidationResult.Failure(validationResult.ErrorMessage);
-            }
+
             try {
                 _customerRepository.Add(customer);
                 return ValidationResult.Success;
@@ -36,10 +36,15 @@ namespace assessment_platform_developer.Services {
             }
         }
 
-        public void UpdateCustomer(Customer customer) {
+        public ValidationResult UpdateCustomer(Customer customer) {
             // ensure that customer exists
-            var existingCustomer = _customerRepository.Get(customer.ID) ?? throw new ArgumentException($"Cannot update. Customer with ID {customer.ID} does not exist.");
+            var validationResult = _validator.ValidateUpdate(customer);
+            if (!validationResult.IsValid) {
+                return ValidationResult.Failure(validationResult.ErrorMessage);
+            }
+
             _customerRepository.Update(customer);
+            return ValidationResult.Success;
         }
 
         public void DeleteCustomer(int id) {

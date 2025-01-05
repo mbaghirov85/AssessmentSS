@@ -14,17 +14,19 @@ namespace assessment_platform_developer.Controllers {
     /// </summary>
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController {
-        private readonly ICustomerServiceGet _customerServiceGet;
-        private readonly ICustomerServiceManage _customerServiceManage;
+        private readonly ICustomerGetService _customerGetService;
+        private readonly ICustomerManageService _customerManageService;
+        private readonly ICustomerValidationService _validator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomersController"/> class.
         /// </summary>
         /// <param name="customerService">The customer service dependency.</param>
         // GET: api/customers
-        public CustomersController(ICustomerServiceGet customerServiceGet, ICustomerServiceManage customerServiceManage) {
-            _customerServiceGet = customerServiceGet ?? throw new ArgumentNullException(nameof(customerServiceGet));
-            _customerServiceManage = customerServiceManage ?? throw new ArgumentNullException(nameof(customerServiceManage));
+        public CustomersController(ICustomerGetService customerGetService, ICustomerManageService customerManageService, ICustomerValidationService validator) {
+            this._customerGetService = customerGetService ?? throw new ArgumentNullException(nameof(customerGetService));
+            this._customerManageService = customerManageService ?? throw new ArgumentNullException(nameof(customerManageService));
+            this._validator = validator;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace assessment_platform_developer.Controllers {
         [HttpGet]
         [Route("")]
         public IHttpActionResult GetAllCustomers() {
-            var customers = _customerServiceGet.GetAllCustomers();
+            var customers = _customerGetService.GetAllCustomers();
             return Ok(customers);
         }
 
@@ -46,7 +48,7 @@ namespace assessment_platform_developer.Controllers {
         [HttpGet]
         [Route("{ID:int}")]
         public IHttpActionResult GetCustomer(int ID) {
-            var customer = _customerServiceGet.GetCustomer(ID);
+            var customer = _customerGetService.GetCustomer(ID);
             if (customer == null) {
                 return NotFound();
             }
@@ -62,12 +64,12 @@ namespace assessment_platform_developer.Controllers {
         [Route("{ID:int}")]
         public IHttpActionResult DeleteCustomer(int ID) {
             try {
-                var existingCustomer = _customerServiceGet.GetCustomer(ID);
+                var existingCustomer = _customerGetService.GetCustomer(ID);
                 if (existingCustomer == null) {
                     return NotFound();
                 }
 
-                _customerServiceManage.DeleteCustomer(ID);
+                _customerManageService.DeleteCustomer(ID);
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (Exception ex) {
                 return InternalServerError(ex);
@@ -86,18 +88,22 @@ namespace assessment_platform_developer.Controllers {
         public async Task<IHttpActionResult> AddCustomer() {
             var rawBody = await Request.Content.ReadAsStringAsync();
             try {
-                Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
-                if (customer == null) {
-                    return BadRequest("customer data must be provided");
+                var validationResult = _validator.ValidateHttpAdd(rawBody);
+                if (!validationResult.IsValid) {
+                    return BadRequest(validationResult.ErrorMessage);
                 }
-                var result = _customerServiceManage.AddCustomer(customer);
+
+                Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
+
+                var result = _customerManageService.AddCustomer(customer);
                 if (!result.IsValid) {
                     return BadRequest(result.ErrorMessage);
                 }
                 return Created("ok", result);
-            } catch (JsonReaderException ex) { 
-                return BadRequest(ex.Message);
+            } catch (JsonException ex) {
+                return BadRequest($"Invalid customer data format: {ex.Message}");
             } catch (ArgumentNullException ex) {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return BadRequest(ex.Message);
             } catch (Exception ex) {
                 return InternalServerError(ex);
@@ -116,23 +122,21 @@ namespace assessment_platform_developer.Controllers {
         [Route("{ID:int}")]
         public async Task<IHttpActionResult> UpdateCustomer(int ID) {
             var rawBody = await Request.Content.ReadAsStringAsync();
-            rawBody.EnsureEndSeparator();
+
             try {
-                Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
-                if (customer == null) {
+                var validationResult = _validator.ValidateHttpUpdate(ID, rawBody);
+                if (!validationResult.IsValid)
                     return BadRequest("customer data must be provided");
-                }
 
-                if (ID != customer.ID) {
-                    return BadRequest("Customer IDs provided in the URL and Body does not match");
-                }
+                Customer customer = JsonConvert.DeserializeObject<Customer>(rawBody);
 
-                var existingCustomer = _customerServiceGet.GetCustomer(customer.ID);
-                if (existingCustomer == null) {
-                    return NotFound();
-                }
+                var result = _customerManageService.UpdateCustomer(customer);
+                if (!result.IsValid) {
+                    if (result.ErrorMessage == "Not found")
+                        return NotFound();
 
-                _customerServiceManage.UpdateCustomer(customer);
+                    return BadRequest(result.ErrorMessage);
+                }
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);

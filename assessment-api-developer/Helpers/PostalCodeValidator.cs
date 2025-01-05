@@ -14,7 +14,7 @@ namespace assessment_platform_developer.Helpers {
     public class PostalCodeValidator : IPostalCodeValidator {
 
         private static readonly Dictionary<string, string> _postalCodePatterns = new Dictionary<string, string>{
-            { EnumExtensions.GetEnumDescription(Countries.Canada), @"^[A-Z]\d[A-Z] \d[A-Z]\d$" },
+            { EnumExtensions.GetEnumDescription(Countries.Canada), @"^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$" },
             { EnumExtensions.GetEnumDescription(Countries.UnitedStates), @"^\d{5}(-\d{4})?$" }
         };
 
