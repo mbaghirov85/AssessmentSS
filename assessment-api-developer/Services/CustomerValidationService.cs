@@ -11,18 +11,24 @@ namespace assessment_platform_developer.Services {
 
         ValidationResult ValidateUpdate(Customer customer);
 
+        ValidationResult ValidateDelete(int ID);
+
         ValidationResult ValidateHttpAdd(string requestBody);
 
         ValidationResult ValidateHttpUpdate(int ID, string requestBody);
+
+        ValidationResult ValidateHttpDelete(int ID);
     };
 
     public class CustomerValidationService : ICustomerValidationService {
-        private readonly IPostalCodeValidator _postalCodeValidator = new PostalCodeValidator();
-        private readonly IEmailValidator _emailValidator = new EmailValidator();
+        private readonly IPostalCodeValidator _postalCodeValidator;
+        private readonly IEmailValidator _emailValidator;
         private readonly ICustomerRepository _repository;
 
         public CustomerValidationService(ICustomerRepository repository) {
             this._repository = repository;
+            this._postalCodeValidator = new PostalCodeValidator();
+            this._emailValidator = new EmailValidator();
         }
 
         public ValidationResult ValidateHttpAdd(string requestBody) {
@@ -54,6 +60,13 @@ namespace assessment_platform_developer.Services {
             return ValidationResult.Success;
         }
 
+        public ValidationResult ValidateHttpDelete(int ID) {
+            if (ID == 0)
+                return ValidationResult.Failure("Invalid customer ID");
+
+            return ValidationResult.Success;
+        }
+
         public ValidationResult ValidateAdd(Customer customer) {
             if (string.IsNullOrEmpty(customer.Name) || string.IsNullOrEmpty(customer.Email) || string.IsNullOrEmpty(customer.Phone))
                 return ValidationResult.Failure("Mandatory fields missing");
@@ -76,6 +89,14 @@ namespace assessment_platform_developer.Services {
                 return ValidationResult.Failure($"Not found");
 
             return ValidateAdd(customer);
+        }
+
+        public ValidationResult ValidateDelete(int ID) {
+            var existing = _repository.Get(ID);
+            if (existing == null)
+                return ValidationResult.Failure($"Not found");
+
+            return ValidationResult.Success;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace assessment_platform_developer.Services {
 
         ValidationResult UpdateCustomer(Customer customer);
 
-        void DeleteCustomer(int id);
+        ValidationResult DeleteCustomer(int id);
     }
 
     public class CustomerManageService : ICustomerManageService {
@@ -47,10 +47,13 @@ namespace assessment_platform_developer.Services {
             return ValidationResult.Success;
         }
 
-        public void DeleteCustomer(int id) {
-            // ensure that cusotmer exists
-            var existingCustomer = _customerRepository.Get(id) ?? throw new ArgumentException($"Cannot delete. Customer with ID {id} does not exist.");
+        public ValidationResult DeleteCustomer(int id) {
+            var validationResult = _validator.ValidateDelete(id);
+            if (!validationResult.IsValid) {
+                return ValidationResult.Failure(validationResult.ErrorMessage);
+            }
             _customerRepository.Delete(id);
+            return ValidationResult.Success;
         }
     }
 }
