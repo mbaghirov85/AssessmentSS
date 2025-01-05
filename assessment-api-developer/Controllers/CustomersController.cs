@@ -4,7 +4,6 @@ using System.Web.Http;
 using System;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using WebGrease.Extensions;
 
 namespace assessment_platform_developer.Controllers {
 

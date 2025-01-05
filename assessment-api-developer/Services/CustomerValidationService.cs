@@ -37,7 +37,7 @@ namespace assessment_platform_developer.Services {
 
             try {
                 var customer = JsonConvert.DeserializeObject<Customer>(requestBody);
-            } catch (JsonReaderException ex) {
+            } catch (JsonReaderException) {
                 return ValidationResult.Failure("Invalid JSON format");
             }
 
@@ -53,7 +53,7 @@ namespace assessment_platform_developer.Services {
 
                 if (ID != customer.ID)
                     return ValidationResult.Failure("ID in URL does not match ID in request body");
-            } catch (JsonReaderException ex) {
+            } catch (JsonReaderException) {
                 return ValidationResult.Failure("Invalid JSON format");
             }
 
