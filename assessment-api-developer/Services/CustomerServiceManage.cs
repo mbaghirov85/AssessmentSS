@@ -1,17 +1,10 @@
 ﻿using assessment_platform_developer.Models;
 using assessment_platform_developer.Repositories;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace assessment_platform_developer.Services {
 
-    public interface ICustomerService {
-
-        IEnumerable<Customer> GetAllCustomers();
-
-        Customer GetCustomer(int id);
+    public interface ICustomerServiceManage {
 
         ValidationResult AddCustomer(Customer customer);
 
@@ -20,22 +13,13 @@ namespace assessment_platform_developer.Services {
         void DeleteCustomer(int id);
     }
 
-    public class CustomerService : ICustomerService {
+    public class CustomerServiceManage : ICustomerServiceManage {
         private readonly ICustomerRepository _customerRepository;
         private readonly ICustomerValidationService _validator;
 
-        public CustomerService(ICustomerRepository customerRepository, ICustomerValidationService validator) {
+        public CustomerServiceManage(ICustomerRepository customerRepository, ICustomerValidationService validator) {
             this._customerRepository = customerRepository;
             this._validator = validator;
-        }
-
-        public IEnumerable<Customer> GetAllCustomers() {
-            return _customerRepository.GetAll();
-        }
-
-        public Customer GetCustomer(int id) {
-            var customer = _customerRepository.Get(id);
-            return customer;
         }
 
         public ValidationResult AddCustomer(Customer customer) {

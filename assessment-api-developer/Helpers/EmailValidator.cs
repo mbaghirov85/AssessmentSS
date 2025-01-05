@@ -2,9 +2,14 @@
 
 namespace assessment_platform_developer.Helpers {
 
-    public class EmailValidator {
+    public interface IEmailValidator {
 
-        public static bool IsValidEmail(string email) {
+        bool IsValidEmail(string email);
+    }
+
+    public class EmailValidator : IEmailValidator {
+
+        public bool IsValidEmail(string email) {
             if (string.IsNullOrEmpty(email))
                 return false;
 

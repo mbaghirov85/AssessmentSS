@@ -14,15 +14,17 @@ namespace assessment_platform_developer.Controllers {
     /// </summary>
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerServiceGet _customerServiceGet;
+        private readonly ICustomerServiceManage _customerServiceManage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomersController"/> class.
         /// </summary>
         /// <param name="customerService">The customer service dependency.</param>
         // GET: api/customers
-        public CustomersController(ICustomerService customerService) {
-            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+        public CustomersController(ICustomerServiceGet customerServiceGet, ICustomerServiceManage customerServiceManage) {
+            _customerServiceGet = customerServiceGet ?? throw new ArgumentNullException(nameof(customerServiceGet));
+            _customerServiceManage = customerServiceManage ?? throw new ArgumentNullException(nameof(customerServiceManage));
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace assessment_platform_developer.Controllers {
         [HttpGet]
         [Route("")]
         public IHttpActionResult GetAllCustomers() {
-            var customers = _customerService.GetAllCustomers();
+            var customers = _customerServiceGet.GetAllCustomers();
             return Ok(customers);
         }
 
@@ -44,7 +46,7 @@ namespace assessment_platform_developer.Controllers {
         [HttpGet]
         [Route("{ID:int}")]
         public IHttpActionResult GetCustomer(int ID) {
-            var customer = _customerService.GetCustomer(ID);
+            var customer = _customerServiceGet.GetCustomer(ID);
             if (customer == null) {
                 return NotFound();
             }
@@ -60,12 +62,12 @@ namespace assessment_platform_developer.Controllers {
         [Route("{ID:int}")]
         public IHttpActionResult DeleteCustomer(int ID) {
             try {
-                var existingCustomer = _customerService.GetCustomer(ID);
+                var existingCustomer = _customerServiceGet.GetCustomer(ID);
                 if (existingCustomer == null) {
                     return NotFound();
                 }
 
-                _customerService.DeleteCustomer(ID);
+                _customerServiceManage.DeleteCustomer(ID);
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (Exception ex) {
                 return InternalServerError(ex);
@@ -88,11 +90,13 @@ namespace assessment_platform_developer.Controllers {
                 if (customer == null) {
                     return BadRequest("customer data must be provided");
                 }
-                var result = _customerService.AddCustomer(customer);
+                var result = _customerServiceManage.AddCustomer(customer);
                 if (!result.IsValid) {
                     return BadRequest(result.ErrorMessage);
                 }
                 return Created("ok", result);
+            } catch (JsonReaderException ex) { 
+                return BadRequest(ex.Message);
             } catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);
             } catch (Exception ex) {
@@ -123,12 +127,12 @@ namespace assessment_platform_developer.Controllers {
                     return BadRequest("Customer IDs provided in the URL and Body does not match");
                 }
 
-                var existingCustomer = _customerService.GetCustomer(customer.ID);
+                var existingCustomer = _customerServiceGet.GetCustomer(customer.ID);
                 if (existingCustomer == null) {
                     return NotFound();
                 }
 
-                _customerService.UpdateCustomer(customer);
+                _customerServiceManage.UpdateCustomer(customer);
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
             } catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);

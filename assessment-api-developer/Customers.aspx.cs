@@ -11,6 +11,8 @@ using System.Web;
 namespace assessment_platform_developer {
 
     public partial class Customers : Page {
+        private readonly IEmailValidator _emailValidator = new EmailValidator();
+        private readonly IPostalCodeValidator _postalCodeValidator = new PostalCodeValidator();
 
         private IRestfulCustomerService _restfulCustomerService {
             get {
@@ -128,12 +130,12 @@ namespace assessment_platform_developer {
         }
 
         protected async void btnAdd_Click(object sender, EventArgs e) {
-            if (!EmailValidator.IsValidEmail(txtCustomerEmail.Text)) {
+            if (!_emailValidator.IsValidEmail(txtCustomerEmail.Text)) {
                 ShowMessage("error", "Invalid customer email format.");
                 return;
             }
 
-            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !EmailValidator.IsValidEmail(txtContactEmail.Text)) {
+            if (!String.IsNullOrEmpty(txtContactEmail.Text) && !_emailValidator.IsValidEmail(txtContactEmail.Text)) {
                 ShowMessage("error", "Invalid contact email format.");
                 return;
             }
@@ -237,7 +239,7 @@ namespace assessment_platform_developer {
         protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 PopulateDdlState("0");
-                revCustomerZip.ValidationExpression = PostalCodeValidator.GetValidationExpression(ddlCountry.SelectedItem.Text);
+                revCustomerZip.ValidationExpression = _postalCodeValidator.GetValidationExpression(ddlCountry.SelectedItem.Text);
                 txtCustomerZip.Text = "";
                 txtCustomerCity.Text = "";
                 lblError.Text = "";
