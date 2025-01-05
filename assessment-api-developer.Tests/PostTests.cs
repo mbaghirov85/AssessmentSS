@@ -6,24 +6,21 @@ using Moq;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Threading.Tasks;
-using System;
-using assessment_platform_developer.Repositories;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace assessment_platform_developer.Tests {
 
     [TestClass]
-    public class PostCustomerTests {
-        private ICustomerRepository _customerRepository;
+    public class PostTests {
         private CustomersController _controller;
-        private ICustomerGetService _customerGetService;
         private Mock<ICustomerGetService> _mockCustomerGetService;
         private Mock<ICustomerManageService> _mockCustomerManageService;
         private Mock<ICustomerValidationService> _mockCustomerValidationService;
 
         [TestInitialize]
         public void TestInitialize() {
-            _customerRepository = new CustomerRepository();
-            _customerGetService = new CustomerGetService(_customerRepository);
             _mockCustomerGetService = new Mock<ICustomerGetService>();
             _mockCustomerManageService = new Mock<ICustomerManageService>();
             _mockCustomerValidationService = new Mock<ICustomerValidationService>();
@@ -32,6 +29,8 @@ namespace assessment_platform_developer.Tests {
                 _mockCustomerManageService.Object,
                 _mockCustomerValidationService.Object
             );
+            _controller.Request = new HttpRequestMessage();
+            _controller.Configuration = new HttpConfiguration();
         }
 
         [TestMethod]
@@ -42,6 +41,8 @@ namespace assessment_platform_developer.Tests {
                 Email = "john@example.com",
                 Phone = "1234567890"
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Success);
 
@@ -59,6 +60,8 @@ namespace assessment_platform_developer.Tests {
                 Name = "John Doe"
                 // Missing Email and Phone
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Failure("Mandatory fields missing"));
 
             // Act
@@ -87,6 +90,8 @@ namespace assessment_platform_developer.Tests {
                 ContactTitle = "Manager",
                 ContactNotes = "Contact notes"
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Success);
 
@@ -105,6 +110,8 @@ namespace assessment_platform_developer.Tests {
                 Email = "invalid-email",
                 Phone = "1234567890"
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Failure("Invalid email format"));
 
             // Act
@@ -124,6 +131,8 @@ namespace assessment_platform_developer.Tests {
                 Country = "United States",
                 Zip = "invalid-zip"
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Failure("Invalid postal code"));
 
             // Act
@@ -152,6 +161,8 @@ namespace assessment_platform_developer.Tests {
                 ContactTitle = new string('H', 50),
                 ContactNotes = new string('I', 500)
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Success);
 
@@ -170,11 +181,9 @@ namespace assessment_platform_developer.Tests {
                 Email = "john@example.com",
                 Phone = "1234567890"
             };
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
-            var _res = _customerGetService.GetAllCustomers();
-            foreach (var item in _res) {
-                Console.WriteLine("ID: " + item.ID + " Name: " + item.Name + " Email: " + item.Email + " Phone: " + item.Phone);
-            }
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Failure("Customer already exists"));
 
             // Act

@@ -8,7 +8,7 @@ using System.Linq;
 namespace assessment_platform_developer.Tests {
 
     [TestClass]
-    public class GetCustomersTests {
+    public class GetAllTests {
         private ICustomerGetService _customerGetService;
         private ICustomerRepository _customerRepository;
 
