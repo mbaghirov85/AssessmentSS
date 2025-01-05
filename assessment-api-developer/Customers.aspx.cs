@@ -11,7 +11,6 @@ using System.Web;
 namespace assessment_platform_developer {
 
     public partial class Customers : Page {
-        private readonly IEmailValidator _emailValidator = new EmailValidator();
         private readonly IPostalCodeValidator _postalCodeValidator = new PostalCodeValidator();
 
         private IRestfulCustomerService RestfulService {

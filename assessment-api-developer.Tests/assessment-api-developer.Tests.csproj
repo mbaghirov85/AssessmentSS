@@ -129,10 +129,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetCustomersTests.cs" />
-    <Compile Include="GetCustomerByIdTests.cs" />
-    <Compile Include="PostCustomerTests.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="GetAllTests.cs" />
+    <Compile Include="GetByIdTests.cs" />
+    <Compile Include="DeleteTests.cs" />
+    <Compile Include="PerformanceTests.cs" />
+    <Compile Include="PutTesting.cs" />
+    <Compile Include="PostTests.cs" />
+    <Compile Include="FullFlowTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

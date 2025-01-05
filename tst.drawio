@@ -1,0 +1,43 @@
+[Customer]
+^
+|
+[ICustomerRepository] <-- [CustomerRepository]
+^
+|
+[ICustomerGetService] <-- [CustomerGetService]
+[ICustomerManageService] <-- [CustomerManageService]
+[ICustomerValidationService] <-- [CustomerValidationService]
+^
+|
+[CustomersController]
+^
+|
+[IRestfulCustomerService] <-- [RestfulCustomerService]
+^
+|
+[Customers.aspx]
+
+[IEmailValidator] <-- [EmailValidator]
+[IPostalCodeValidator] <-- [PostalCodeValidator]
+
+[Global.asax] --> [CustomersController]
+[Global.asax] --> [CustomerRepository]
+[Global.asax] --> [CustomerGetService]
+[Global.asax] --> [CustomerManageService]
+[Global.asax] --> [CustomerValidationService]
+[Global.asax] --> [RestfulCustomerService]
+
+[CustomerManageService] --> [ICustomerRepository]
+[CustomerManageService] --> [ICustomerValidationService]
+
+[CustomerValidationService] --> [ICustomerRepository]
+[CustomerValidationService] --> [IPostalCodeValidator]
+[CustomerValidationService] --> [IEmailValidator]
+
+[CustomersController] --> [ICustomerGetService]
+[CustomersController] --> [ICustomerManageService]
+[CustomersController] --> [ICustomerValidationService]
+
+[Customers.aspx] --> [IRestfulCustomerService]
+[Customers.aspx] --> [IEmailValidator]
+[Customers.aspx] --> [IPostalCodeValidator]

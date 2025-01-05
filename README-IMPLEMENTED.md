@@ -6,6 +6,11 @@
 * not sure if my implementation is correct. As I understood this assessment generates the dll library. I've implemented internal methods to setup the local restful interface and startup the site on run.
 * refactored the form item names to keep the type of the objects in front of the IDs (camelCase).
 * faced with the GitKraken bug when it removes the current branch and modified files if some of the files are blocked and you are switching to another branch.
+* added test cases using AI. Will check them all later to revise the code behind. Almost all processes fine except a few performance-related ones.
+
+## High level site map
+
+![Site map](assessment-api-developer/docs/SiteMap.png)
 
 ## Applied Changes
 
@@ -21,8 +26,6 @@
 
 ### Services
 
-modification and addition of services
-
 #### CustomersService
 
 * renamed the CustomersService to CustomerService
@@ -36,7 +39,7 @@ modification and addition of services
 * fixed the CodeBehind
 * aligned the page with the master-content principle (like default.aspx)
 * fixed the customer notes field
-* added new label to handle the output messages and make the page more interactive
+* added a new label to handle the output messages and make the page more interactive
 * added 2 missing fields for customer contact
 * removed the direct service call (decoupled from the CustomerService)
 * implemented the WebApiCalls through the newly added service called RestfulCustomerService

@@ -108,7 +108,6 @@ namespace assessment_platform_developer.Controllers {
             } catch (JsonException ex) {
                 return BadRequest($"Invalid customer data format: {ex.Message}");
             } catch (ArgumentNullException ex) {
-                System.Diagnostics.Debug.WriteLine(ex);
                 return BadRequest(ex.Message);
             } catch (Exception ex) {
                 return InternalServerError(ex);

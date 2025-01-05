@@ -32,7 +32,7 @@ namespace assessment_platform_developer.Services {
                 _customerRepository.Add(customer);
                 return ValidationResult.Success;
             } catch (Exception ex) {
-                return ValidationResult.Failure($"Filed to add customer: {ex.Message}");
+                return ValidationResult.Failure($"Failed to add customer: {ex.Message}");
             }
         }
 
