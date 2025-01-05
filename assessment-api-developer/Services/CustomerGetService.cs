@@ -4,20 +4,18 @@ using System.Collections.Generic;
 
 namespace assessment_platform_developer.Services {
 
-    public interface ICustomerServiceGet {
+    public interface ICustomerGetService {
 
         IEnumerable<Customer> GetAllCustomers();
 
         Customer GetCustomer(int id);
     }
 
-    public class CustomerServiceGet : ICustomerServiceGet {
+    public class CustomerGetService : ICustomerGetService {
         private readonly ICustomerRepository _customerRepository;
-        private readonly ICustomerValidationService _validator;
 
-        public CustomerServiceGet(ICustomerRepository customerRepository, ICustomerValidationService validator) {
+        public CustomerGetService(ICustomerRepository customerRepository) {
             this._customerRepository = customerRepository;
-            this._validator = validator;
         }
 
         public IEnumerable<Customer> GetAllCustomers() {

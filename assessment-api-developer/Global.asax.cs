@@ -73,8 +73,8 @@ namespace assessment_platform_developer {
             // Configure the container (register)
             container.Register<ICustomerValidationService, CustomerValidationService>(Lifestyle.Singleton);
             container.Register<ICustomerRepository, CustomerRepository>(Lifestyle.Singleton);
-            container.Register<ICustomerServiceGet, CustomerServiceGet>(Lifestyle.Scoped);
-            container.Register<ICustomerServiceManage, CustomerServiceManage>(Lifestyle.Scoped);
+            container.Register<ICustomerGetService, CustomerGetService>(Lifestyle.Scoped);
+            container.Register<ICustomerManageService, CustomerManageService>(Lifestyle.Scoped);
             container.Register<IRestfulCustomerService, RestfulCustomerService>(Lifestyle.Scoped);
             container.Register<CustomersController>(new AsyncScopedLifestyle());
 
