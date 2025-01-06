@@ -8,6 +8,11 @@ using assessment_platform_developer.Models;
 using assessment_platform_developer.Services;
 using Moq;
 using System.Web.Http.Results;
+using System;
+using System.Net.Http;
+using System.Web.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace assessment_platform_developer.Tests {
 
@@ -28,6 +33,8 @@ namespace assessment_platform_developer.Tests {
                 _mockCustomerManageService.Object,
                 _mockCustomerValidationService.Object
             );
+            _controller.Request = new HttpRequestMessage();
+            _controller.Configuration = new HttpConfiguration();
         }
 
         [TestMethod]
@@ -53,18 +60,25 @@ namespace assessment_platform_developer.Tests {
         [TestMethod]
         public async Task TestConcurrentCustomerOperations() {
             // Arrange
-            const int concurrentOperations = 100;
+            const int concurrentOperations = 10000;
             var tasks = new List<Task>();
             var customer = new Customer { Name = "Test Customer", Email = "test@example.com", Phone = "1234567890" };
+
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Success);
 
+            System.Diagnostics.Debug.WriteLine($"Starting execution");
             // Act
             for (int i = 0; i < concurrentOperations; i++) {
                 tasks.Add(_controller.AddCustomer());
             }
+            System.Diagnostics.Debug.WriteLine($"Awaiting completion");
             await Task.WhenAll(tasks);
 
+            System.Diagnostics.Debug.WriteLine($"All transactions executed: {Times.Exactly(concurrentOperations)}");
             // Assert
             _mockCustomerManageService.Verify(s => s.AddCustomer(It.IsAny<Customer>()), Times.Exactly(concurrentOperations));
         }
@@ -74,6 +88,10 @@ namespace assessment_platform_developer.Tests {
             // Arrange
             const int iterations = 1000;
             var customer = new Customer { ID = 1, Name = "Test Customer", Email = "test@example.com", Phone = "1234567890" };
+
+            var jsonContent = JsonConvert.SerializeObject(customer);
+            _controller.Request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
             _mockCustomerValidationService.Setup(s => s.ValidateHttpAdd(It.IsAny<string>())).Returns(ValidationResult.Success);
             _mockCustomerManageService.Setup(s => s.AddCustomer(It.IsAny<Customer>())).Returns(ValidationResult.Success);
             _mockCustomerValidationService.Setup(s => s.ValidateHttpUpdate(It.IsAny<int>(), It.IsAny<string>())).Returns(ValidationResult.Success);

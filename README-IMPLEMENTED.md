@@ -6,7 +6,7 @@
 * not sure if my implementation is correct. As I understood this assessment generates the dll library. I've implemented internal methods to setup the local restful interface and startup the site on run.
 * refactored the form item names to keep the type of the objects in front of the IDs (camelCase).
 * faced with the GitKraken bug when it removes the current branch and modified files if some of the files are blocked and you are switching to another branch.
-* added test cases using AI. Will check them all later to revise the code behind. Almost all processes fine except a few performance-related ones.
+* added test cases using AI. Revised them and understood the logic. Fixed the problem with the performance tests. HTTP contexts were not handled properly. Now all tests passess as expected.
 
 ## High level site map
 
